@@ -1,0 +1,24 @@
+---
+- name: Install Python3
+  hosts: "{{ variable_host | default('all') }}"
+  tasks:
+    - name: Check if Python3 installed
+      package_facts:
+        manager: auto
+
+    - name: Installed
+      debug:
+        msg: "Version of Python is {{ ansible_facts.packages['python3'][0]['version'] }}"
+      when: "'python3' in ansible_facts.packages"
+
+    - name: Not installed
+      debug:
+        msg: "Python3 is not installed"
+      when: "'python3' not in ansible_facts.packages"
+
+    - name: Install Python3
+      become: true
+      apt:
+        name: python3
+        state: present
+      when: "'python3' not in ansible_facts.packages"

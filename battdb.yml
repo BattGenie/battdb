@@ -1,0 +1,3 @@
+---
+- import_playbook: playbooks/Install_Python3.yml
+- import_playbook: playbooks/Install_Docker.yml
