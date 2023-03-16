@@ -20,3 +20,9 @@ In order to use this project, you will need to have the following software insta
 
 3. [Docker](https://www.docker.com) - a platform for developing, shipping, and running applications in containers.
 4. [Docker Compose](https://docs.docker.com/compose) - a tool for defining and running multi-container Docker applications.
+
+## Usage
+
+```sh
+ansible-playbook battdb.yml --extra-vars "variable_host=vms" --ask-become-pass
+```

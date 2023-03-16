@@ -1,0 +1,36 @@
+version: "3.8"
+
+networks:
+  monitor-net:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:15
+    restart: always
+    container_name: postgres
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_DB: $POSTGRES_DATABASE
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    networks:
+      - monitor-net
+
+  flyway:
+    image: flyway/flyway:latest
+    container_name: flyway
+    depends_on:
+      - postgres
+    volumes:
+      - $HOME_PATH/db_bg_cell_testing_main/migration_scripts:/flyway/sql
+    command: -url=jdbc:postgresql://postgres:5432/$POSTGRES_DATABASE -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD migrate
+    networks:
+      - monitor-net

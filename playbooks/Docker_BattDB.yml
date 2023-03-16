@@ -1,0 +1,20 @@
+---
+- name: Install BattDB
+  hosts: "{{ variable_host | default('all') }}"
+  vars_files:
+    - ../variables/postgresql.yml
+  tasks:
+    - name: Copy docker-compose
+      ansible.posix.synchronize:
+        src: ../assets/docker-compose.yml
+        dest: "{{ ansible_env.HOME }}/battdb/"
+
+
+    - name: Start Docker Compose
+      become: true
+      environment:
+        POSTGRES_USER: "{{ db_user }}"
+        POSTGRES_PASSWORD: "{{ db_password }}"
+        POSTGRES_DATABASE: "{{ db_name }}"
+        HOME_PATH: "{{ ansible_env.HOME }}"
+      shell: docker-compose -f {{ ansible_env.HOME }}/battdb/docker-compose.yml up -d
