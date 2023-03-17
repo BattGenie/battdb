@@ -6,7 +6,7 @@
   tasks:
     - name: Copy docker-compose
       ansible.posix.synchronize:
-        src: ../assets/docker-compose.yml
+        src: ../assets/Docker/remote/docker-compose.yml
         dest: "{{ ansible_env.HOME }}/battdb/"
 
 
@@ -16,5 +16,6 @@
         POSTGRES_USER: "{{ db_user }}"
         POSTGRES_PASSWORD: "{{ db_password }}"
         POSTGRES_DATABASE: "{{ db_name }}"
+        POSTGRES_PORT: "{{ db_port }}"
         HOME_PATH: "{{ ansible_env.HOME }}"
       shell: docker-compose -f {{ ansible_env.HOME }}/battdb/docker-compose.yml up -d

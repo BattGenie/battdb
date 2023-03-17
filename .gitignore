@@ -1,0 +1,11 @@
+conf/
+.temp/
+
+*.DS_Store
+*.ipynb_checkpoints
+.ipynb_checkpoints/
+.Rhistory
+*.Rhistory
+
+# docker files
+assets/Docker/local/data
