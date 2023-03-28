@@ -5,10 +5,10 @@ networks:
     driver: bridge
 
 services:
-  postgres:
-    image: postgres:15
+  timescaledb:
+    image: timescale/timescaledb:2.10.1-pg15
     restart: always
-    container_name: postgres
+    container_name: timescaledb
     environment:
       POSTGRES_USER: $POSTGRES_USER
       POSTGRES_PASSWORD: $POSTGRES_PASSWORD
@@ -33,10 +33,10 @@ services:
     image: flyway/flyway:latest
     container_name: flyway
     depends_on:
-      postgres:
+      timescaledb:
         condition: service_healthy
     volumes:
       - ../../GitHub/db_bg_cell_testing_main/migration_scripts:/flyway/sql
-    command: -url=jdbc:postgresql://postgres:5432/$POSTGRES_DATABASE -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD -connectRetriesInterval=10 -connectRetries=60 migrate
+    command: -url=jdbc:postgresql://timescaledb:5432/$POSTGRES_DATABASE -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD -connectRetriesInterval=10 -connectRetries=60 migrate
     networks:
       - monitor-net
