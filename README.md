@@ -64,7 +64,7 @@ In order to use Ansible, you will need to have the following software installed 
 
     Please note that --ask-become-pass is used to prompt for the sudo password. However, if you are using AWS EC2 instances, you may not need to use this option as the instances may be configured to allow passwordless sudo access.
 
-4. Wait for the playbook to complete, and the `BattDB` database has been successfully deployed.
+4. Wait for the playbook to complete, and the `BattDB` database has been successfully deployed. The data for the database will be stored in the directory `~/battdb/data`.
 
 ## Local Deployment with Docker Compose
 
@@ -98,4 +98,4 @@ In order to use Docker Compose, you will need to have the following software ins
     docker-compose --env-file .env up -d
     ```
 
-4. Wait for Docker Compose to complete, and the `BattDB` database has been successfully deployed.
+4. Wait for Docker Compose to complete, and the `BattDB` database has been successfully deployed. The data for the database will be stored in the directory `assets/Docker/data`.
