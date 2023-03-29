@@ -1,12 +1,12 @@
 version: "3.8"
 
 networks:
-  monitor-net:
+  battdb-net:
     driver: bridge
 
 services:
   postgres:
-    image: postgres:15
+    image: timescale/timescaledb:2.10.1-pg15
     restart: always
     container_name: postgres
     environment:
@@ -27,16 +27,16 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
     networks:
-      - monitor-net
+      - battdb-net
 
   flyway:
-    image: flyway/flyway:latest
+    image: flyway/flyway:9.16.1
     container_name: flyway
     depends_on:
       postgres:
         condition: service_healthy
     volumes:
-      - ../../GitHub/db_bg_cell_testing_main/migration_scripts:/flyway/sql
+      - "$FLYWAY_SQL:/flyway/sql"
     command: -url=jdbc:postgresql://postgres:5432/$POSTGRES_DATABASE -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD -connectRetriesInterval=10 -connectRetries=60 migrate
     networks:
-      - monitor-net
+      - battdb-net

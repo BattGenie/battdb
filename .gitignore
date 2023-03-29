@@ -8,4 +8,4 @@ conf/
 *.Rhistory
 
 # docker files
-assets/Docker/local/data
+assets/Docker/data
