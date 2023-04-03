@@ -2,6 +2,6 @@
 - import_playbook: playbooks/Install_Python3.yml
 - import_playbook: playbooks/Install_Docker.yml
 
-- import_playbook: playbooks/Clone_db_bg_cell_testing_main.yml
+- import_playbook: playbooks/Clone_migration_scripts.yml
 
 - import_playbook: playbooks/Docker_BattDB.yml

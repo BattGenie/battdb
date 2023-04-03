@@ -2,7 +2,7 @@
 - name: Install Flyway
   hosts: "{{ variable_host | default('all') }}"
   tasks:
-    - name: Copy db_bg_cell_testing_main
+    - name: Copy Migration Scripts
       ansible.posix.synchronize:
-        src: ../assets/GitHub/db_bg_cell_testing_main
+        src: ../assets/migration_scripts
         dest: "{{ ansible_env.HOME }}/"

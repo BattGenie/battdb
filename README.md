@@ -83,7 +83,7 @@ In order to use Docker Compose, you will need to have the following software ins
 1. Enter the compose directory:
 
     ```sh
-    cd assets/Docker/local/
+    cd assets/battdb_docker/
     ```
 
 2. Modify the `.env` file, change the environment variables:  
@@ -99,3 +99,34 @@ In order to use Docker Compose, you will need to have the following software ins
     ```
 
 4. Wait for Docker Compose to complete, and the `BattDB` database has been successfully deployed. The data for the database will be stored in the directory `assets/Docker/data`.
+
+## Migrate Database with Flyway
+
+If you need to manually migrate your database, follow these steps:
+
+Download and install Flyway from  
+<https://documentation.red-gate.com/fd/command-line-184127404.html>
+
+1. Download and install Flyway from <https://documentation.red-gate.com/fd/command-line-184127404.html>.
+2. Navigate to the Flyway folder and edit the conf/flyway.conf file with the following parameters:
+
+```conf
+flyway.url=jdbc:postgresql://[URL]:[PORT]/[DATABASE]
+# Example: flyway.url=jdbc:postgresql://localhost:5432/db_bg_cell_testing
+flyway.user=[USERNAME]
+flyway.password=[PASSWORD]
+```
+
+Update to latest version
+
+```sh
+flyway migrate -locations=filesystem:./assets/migration_scripts
+```
+
+Update to specify version
+
+```sh
+flyway -target="[VERSION]" migrate -locations=filesystem:./assets/migration_scripts
+```
+
+Note that Ansible and Docker Compose can also automatically migrate your database.
