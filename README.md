@@ -42,24 +42,23 @@ In order to use Ansible, you will need to have the following software installed 
 
 ### Deployment Steps
 
-1. Modify the `hosts`, change the IP address, username, and password of the remote host
+1. Modify the `hosts` file, change the IP address, username, and password of the remote host
+   - Refer to the `hosts` file for an example. If you are using a private key to log in, add your private key to the `assets/ssh/` directory.
 
-2. Decrypt if needed
+2. Modify the `variables/postgresql.yml` file, change the credentials:
 
-    We have encrypted some credentials that need to be decrypted using ansible-vault.
-    To decrypt the encrypted files, run the following commands:
-
-    ```sh
-    ansible-vault decrypt assets/ssh/bing_battdb.pem
-    ansible-vault decrypt variables/postgresql.yml
+    ```yaml
+    ---
+    db_user: YOUR_USERNAME
+    db_password: YOUR_PASSWORD
+    db_name: YOUR_DATABASE
+    db_port: YOUR_PORT
     ```
-
-    The password for the encrypted files can be found in BitVault.
 
 3. Run the playbook using the following command:
 
     ```sh
-    ansible-playbook battdb.yml --extra-vars "variable_host=vms" --ask-become-pass
+    ansible-playbook battdb.yml --extra-vars "variable_host=dev" --ask-become-pass
     ```
 
     Please note that --ask-become-pass is used to prompt for the sudo password. However, if you are using AWS EC2 instances, you may not need to use this option as the instances may be configured to allow passwordless sudo access.
