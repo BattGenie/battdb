@@ -6,7 +6,7 @@
   tasks:
     - name: Copy docker-compose
       ansible.posix.synchronize:
-        src: ../assets/Docker/docker-compose.yml
+        src: ../assets/battdb_docker/docker-compose.yml
         dest: "{{ ansible_env.HOME }}/battdb/"
 
 
@@ -18,5 +18,5 @@
         POSTGRES_DATABASE: "{{ db_name }}"
         POSTGRES_PORT: "{{ db_port }}"
         HOME_PATH: "{{ ansible_env.HOME }}"
-        FLYWAY_SQL: "{{ ansible_env.HOME }}/db_bg_cell_testing_main/migration_scripts"
+        FLYWAY_SQL: "{{ ansible_env.HOME }}/migration_scripts"
       shell: docker-compose -f {{ ansible_env.HOME }}/battdb/docker-compose.yml up -d
