@@ -9,4 +9,3 @@ conf/
 
 # docker files
 assets/battdb_docker/data
-assets/battdb_docker/.env
