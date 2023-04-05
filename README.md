@@ -129,3 +129,7 @@ flyway -target="[VERSION]" migrate -locations=filesystem:./assets/migration_scri
 ```
 
 Note that Ansible and Docker Compose can also automatically migrate your database.
+
+## Diagram
+
+A .dbml file for the database is available in the diagrams directory or in PDF form [here](diagrams/db_bg_cell_testing.pdf).
