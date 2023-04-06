@@ -132,4 +132,6 @@ Note that Ansible and Docker Compose can also automatically migrate your databas
 
 ## Diagram
 
-A .dbml file for the database is available in the diagrams directory or in PDF form [here](diagrams/db_bg_cell_testing.pdf).
+A .dbml file for the database is available in the diagrams directory. A condensed
+version in PDF form [here](diagrams/battdb_condensed.pdf). The condensed version
+only includes the tables and columns that are used by the ETL process.
