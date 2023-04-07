@@ -1,0 +1,121 @@
+Project battdb_condensed {
+  database_type: 'PostgreSQL'
+  Note: 
+  '''
+    Condensed version of the battery database schema which only shows the core
+    tables and relationships.
+  '''
+}
+Table cells {
+    cell_id int [pk, not null, increment]
+    cell_type_id int [ref: > cells_meta.cell_type_id, unique]
+    batch_number text
+    label text [unique]
+    date_received date
+    comments text
+    date_manufactured date
+    manufacture_sn text
+    dimensions "jsonb"
+    weight_g "real"
+    first_received_at_voltage_mv "real"
+    note: "contains data for specific cells"
+}
+Table cells_meta {
+    cell_type_id int [pk, not null, increment]
+    manufacturer text
+    manufacturer_pn text
+    form_factor text
+    capacity_mah int
+    chemistry text
+    dimensions "jsonb"
+}
+Table cyclers {
+    cycler_id int [pk, not null, increment]
+    cycler_type_id int [ref: > cyclers_meta.cycler_type_id]
+    sn text
+    calibration_date date
+    calibration_due_date date
+    location text
+    timezone_based text
+}
+Table cyclers_meta {
+    cycler_type_id int [pk, not null, increment]
+    manufacturer text
+    model text
+    datasheet text
+    num_channels "smallint"
+    lower_current_limit_a numeric
+    upper_current_limit_a numeric
+    lower_voltage_limit_v numeric
+    upper_voltage_limit_v numeric
+}
+Table schedule_meta {
+    schedule_id int [pk, not null, increment]
+    schedule_name text [unique]
+    test_type text
+    cycler_make text
+    date_created date
+    created_by text
+    comments text
+    cv_voltage_threshold_mv int
+    schedule_files text
+}
+Table test_data {
+    test_data_id int [pk, not null, increment]
+    test_id "smallint" [not null, ref: > test_meta.test_id]
+    cycle "smallint"
+    step "smallint"
+    test_time_s numeric
+    step_time_s numeric
+    current_ma numeric [not null]
+    voltage_mv numeric [not null]
+    recorded_datetime timestamptz [not null]
+    unixtime_s numeric [not null]
+    thermocouple_temps_c numeric[]
+    other_detail "jsonb"
+}
+Table test_data_cycle_stats {
+    cycle_stats_id int [pk, not null, increment]
+    test_id "smallint" [ref: > test_meta.test_id]
+    cycle "smallint"
+    test_time_s int
+    reported_charge_capacity_mah numeric
+    reported_discharge_capacity_mah numeric
+    reported_charge_energy_mwh numeric
+    reported_discharge_energy_mwh numeric
+    calculated_charge_capacity_mah numeric
+    calculated_max_charge_temp_c numeric
+    calculated_discharge_capacity_mah numeric
+    calcualated_max_discharge_temp_c numeric
+    calculated_cc_charge_time_s numeric
+    calculated_cv_charge_time_s numeric
+    calculated_cc_capacity_mah numeric
+    calculated_cv_capacity_mah numeric
+    calculated_coulombic_efficiency numeric
+    reported_coulombic_efficiency numeric
+    reported_charge_time_s numeric
+    reported_discharge_time_s numeric
+    calculated_fifty_percent_charge_time_s numeric
+    calculated_eighty_percent_charge_time_s numeric
+    calculated_charge_energy_mwh numeric
+    calculated_discharge_energy_mwh numeric
+    other_detail "jsonb"
+}
+Table test_meta {
+    test_id int [pk, not null, increment]
+    cell_id "smallint" [ref: > cells.cell_id]
+    schedule_id "smallint" [ref: > schedule_meta.schedule_id ]
+    test_name text
+    start_date date
+    end_date date
+    channel "smallint"
+    ev_chamber "smallint"
+    ev_chamber_slot "smallint"
+    thermocouples "smallint"
+    thermocouple_channels "smallint"
+    comments text
+    project_id int [note: 'connects to hidden projects table']
+    test_capacity_mah int
+    potentiostat_id int[]
+    cycler_id int [ref: > cyclers.cycler_id]
+}

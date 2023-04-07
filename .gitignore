@@ -8,4 +8,4 @@ conf/
 *.Rhistory
 
 # docker files
-assets/Docker/data
+assets/battdb_docker/data

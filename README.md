@@ -129,3 +129,9 @@ flyway -target="[VERSION]" migrate -locations=filesystem:./assets/migration_scri
 ```
 
 Note that Ansible and Docker Compose can also automatically migrate your database.
+
+## Diagram
+
+A .dbml file for the database is available in the diagrams directory. A condensed
+version in PDF form [here](diagrams/battdb_condensed.pdf). The condensed version
+only includes the tables and columns that are used by the ETL process.
