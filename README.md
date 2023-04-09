@@ -1,12 +1,16 @@
 # BattDB
 
-This guide provides two ways to deploy the BattDB database for use with BattETL: remotely using Ansible or locally using Docker Compose.
+BattDB is a database based on Timescaledb (Postgres 15 extension) to store field and experimental (physical and virtual) data, as well as the metatada. Detailed database documentation here. Deployment as well as exploration and visualization options are also provided. 
 
-## Remote Deployment with Ansible
+## Deployment Options
+
+BattDB can be deployed in following ways: remotely using Ansible on bare-metal, locally using Docker-compose or using the migration scripts on self-hosted or managed Timescaledb server.
+
+### Remote Deployment with Ansible
 
 An Ansible playbook is provided to quickly deploy the BattDB database remotely.
 
-### Prerequisites
+#### Prerequisites
 
 - The remote host needs to have SSH service enabled.
 - The remote host needs to have root privileges.
