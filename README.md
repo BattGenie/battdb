@@ -1,6 +1,6 @@
 # BattDB
 
-BattDB is a database based on Timescaledb (Postgres 15 extension) to store field and experimental (physical and virtual) data, as well as the metatada. Detailed database documentation here. Deployment as well as exploration and visualization options are also provided. 
+BattDB is a database based on Timescaledb (Postgres 15 extension) to store field and experimental (physical and virtual) data, as well as the metatada. Detailed database documentation here. A few deployment options are provided. 
 
 ## Deployment Options
 
