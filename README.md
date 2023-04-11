@@ -2,6 +2,12 @@
 
 This guide provides two ways to deploy the BattDB database for use with BattETL: remotely using Ansible or locally using Docker Compose.
 
+## Diagram
+
+PDFs and .dbml files for the [condensed](diagrams/battdb_condensed.pdf) and [full](diagrams/battdb.pdf) database are available in the diagrams directory. The condensed form only contains the tables and columns required in the ETL process. An interactive version with table and column descriptions is also available online at 
+https://dbdocs.io/BattGenie/battdb_condensed and 
+https://dbdocs.io/BattGenie/battdb.
+
 ## Remote Deployment with Ansible
 
 An Ansible playbook is provided to quickly deploy the BattDB database remotely.
@@ -129,9 +135,3 @@ flyway -target="[VERSION]" migrate -locations=filesystem:./assets/migration_scri
 ```
 
 Note that Ansible and Docker Compose can also automatically migrate your database.
-
-## Diagram
-
-PDFs and .dbml files for the [condensed](diagrams/battdb_condensed.pdf) and [full](diagrams/battdb.pdf) database are available in the diagrams directory. The condensed form only contains the tables and columns required in the ETL process. An interactive version with table and column descriptions is also available online at 
-https://dbdocs.io/BattGenie/battdb_condensed and 
-https://dbdocs.io/BattGenie/battdb.
