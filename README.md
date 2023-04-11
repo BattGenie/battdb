@@ -13,8 +13,8 @@ BattDB is a database based on Timescaledb (Postgres 15 extension) to store batte
   - [Local Deployment with Docker Compose](#local-deployment-with-docker-compose)
     - [Prerequisites](#prerequisites)
     - [Deployment Steps](#deployment-steps)
-- [Using migration Scripts on your server](#using-migration-scripts-on-your-server)
-  - [Migrate with Flyway](#migrate-with-flyway)
+  - [Using migration Scripts on your server](#using-migration-scripts-on-your-server)
+    - [Migrate with Flyway](#migrate-with-flyway)
 
 ## Documentation
 
