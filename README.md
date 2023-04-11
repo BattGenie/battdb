@@ -103,7 +103,11 @@ In order to use Docker Compose, you will need to have the following software ins
 
 4. Wait for Docker Compose to complete, and the `BattDB` database has been successfully deployed. The data for the database will be stored in the directory `assets/Docker/data`.
 
-## Migrate Database with Flyway
+## Migrate Database
+
+Please note that if you need to update your database version, you can simply re-run the Ansible or Docker Compose deployment commands. This will apply any necessary updates using Docker Flyway. However, if you need to manually migrate your database, you can use Flyway as described below.
+
+### Migrate with Flyway
 
 If you need to manually migrate your database, follow these steps:
 
@@ -115,7 +119,7 @@ Download and install Flyway from
 
 ```conf
 flyway.url=jdbc:postgresql://[URL]:[PORT]/[DATABASE]
-# Example: flyway.url=jdbc:postgresql://localhost:5432/db_bg_cell_testing
+# Example: flyway.url=jdbc:postgresql://localhost:5432/battdb
 flyway.user=[USERNAME]
 flyway.password=[PASSWORD]
 ```
