@@ -1,6 +1,20 @@
 # BattDB
 
-BattDB is a database based on Timescaledb (Postgres 15 extension) to store battery-related field and experimental (physical and virtual) data, as well as the metatada. Detailed database documentation and a few deployment options are provided. 
+BattDB is a database based on Timescaledb (Postgres 15 extension) to store battery-related field and experimental (physical and virtual) data, as well as the metatada. Detailed database documentation and a few deployment options are provided.
+
+### Overview
+
+- [Documentation](#documentation)
+- [Deployment Options](#deployment-options)
+  - [Remote Deployment with Ansible](#remote-deployment-with-ansible)
+    - [Prerequisites](#prerequisites)
+    - [Client playbooks](#client-playbooks)
+    - [Deployment Steps](#deployment-steps)
+  - [Local Deployment with Docker Compose](#local-deployment-with-docker-compose)
+    - [Prerequisites](#prerequisites)
+    - [Deployment Steps](#deployment-steps)
+- [Using migration Scripts on your server](#using-migration-scripts-on-your-server)
+  - [Migrate with Flyway](#migrate-with-flyway)
 
 ## Documentation
 
