@@ -1,4 +1,4 @@
-Project db_bg_cell_testing {
+Project battdb {
   database_type: 'PostgreSQL'
   Note: 
   '''

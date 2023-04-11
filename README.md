@@ -132,6 +132,6 @@ Note that Ansible and Docker Compose can also automatically migrate your databas
 
 ## Diagram
 
-A .dbml file for the database is available in the diagrams directory. A condensed
-version in PDF form [here](diagrams/battdb_condensed.pdf). The condensed version
-only includes the tables and columns that are used by the ETL process.
+PDFs and .dbml files for the [condensed](diagrams/battdb_condensed.pdf) and [full](diagrams/battdb.pdf) database are available in the diagrams directory. The condensed form only contains the tables and columns required in the ETL process. An interactive version with table and column descriptions is also available online at 
+https://dbdocs.io/BattGenie/battdb_condensed and 
+https://dbdocs.io/BattGenie/battdb.
