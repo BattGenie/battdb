@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/BattGenie/battdb/main/images/BattDB_Logo.png">
+
 # BattDB
 
 BattDB is a database based on Timescaledb (Postgres 15 extension) to store battery-related field and experimental (physical and virtual) data, as well as the metatada. Detailed database documentation and a few deployment options are provided.
