@@ -24,7 +24,7 @@ CREATE MATERIALIZED VIEW hil_data_summary_30s
 WITH (timescaledb.continuous)
 AS
     SELECT time_bucket('30 seconds', insert_time) AS thirtysec, 
-    hil_id
+    hil_id,
     avg(measured_voltage_mv) as thirtysec_measured_voltage_mv, 
     avg(modeled_voltage_mv) as thirtysec_modeled_voltage_mv,
     avg(overpotential_mv) as thirtysecn_overpotential_mv, 
