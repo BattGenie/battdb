@@ -9,6 +9,10 @@
         src: ../assets/battdb_docker/docker-compose_development_environments.yml
         dest: "{{ ansible_env.HOME }}/battdb/"
 
+    - name: Copy multiple_database.sh
+      ansible.posix.synchronize:
+        src: ../assets/battdb_docker/multiple_database.sh
+        dest: "{{ ansible_env.HOME }}/battdb/"
 
     - name: Start Docker Compose
       become: true
