@@ -6,7 +6,7 @@ networks:
 
 services:
   postgres:
-    image: timescale/timescaledb:2.10.1-pg15
+    image: timescale/timescaledb:2.10.3-pg15
     restart: always
     container_name: postgres
     environment:
@@ -30,7 +30,7 @@ services:
       - battdb-net
 
   flyway:
-    image: flyway/flyway:9.16.1
+    image: flyway/flyway:9.17.0
     container_name: flyway
     depends_on:
       postgres:
