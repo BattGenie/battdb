@@ -6,7 +6,7 @@
   tasks:
     - name: Copy docker-compose
       ansible.posix.synchronize:
-        src: ../assets/battdb_docker/docker-compose.yml
+        src: ../assets/battdb_docker/docker-compose_development_environments.yml
         dest: "{{ ansible_env.HOME }}/battdb/"
 
 
