@@ -2,4 +2,4 @@
 db_user: postgres
 db_password: postgres
 db_name: battdb
-db_port: 5432
+db_port: 5454

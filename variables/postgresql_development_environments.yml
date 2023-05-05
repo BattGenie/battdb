@@ -1,0 +1,7 @@
+---
+db_user: postgres
+db_password: postgres
+db_name_testing: battdb_testing
+db_name_staging: battdb_staging
+db_name_production: battdb
+db_port: 5454

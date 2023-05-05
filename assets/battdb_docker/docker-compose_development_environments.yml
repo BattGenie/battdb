@@ -1,0 +1,71 @@
+version: "3.8"
+
+networks:
+  battdb-net:
+    driver: bridge
+
+services:
+  postgres:
+    image: timescale/timescaledb:2.10.3-pg15
+    restart: always
+    container_name: postgres
+    environment:
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_MULTIPLE_DATABASES: $POSTGRES_DATABASE_TESTING,$POSTGRES_DATABASE_STAGING,$POSTGRES_DATABASE_PRODUCTION
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $POSTGRES_USER" ]
+      interval: 30s
+      timeout: 5s
+      retries: 10
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    ports:
+      - "$POSTGRES_PORT:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./multiple_databases.sh:/docker-entrypoint-initdb.d/multiple_databases.sh
+    networks:
+      - battdb-net
+
+  flyway-testing:
+    image: flyway/flyway:9.17.0
+    container_name: flyway-testing
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - "$FLYWAY_SQL:/flyway/sql"
+    command: -url=jdbc:postgresql://postgres:5432/$POSTGRES_DATABASE_TESTING -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD -connectRetriesInterval=10 -connectRetries=60 migrate
+    networks:
+      - battdb-net
+
+  flyway-staging:
+    image: flyway/flyway:9.17.0
+    container_name: flyway-staging
+    depends_on:
+      postgres:
+        condition: service_healthy
+      flyway-testing:
+        condition: service_completed_successfully 
+    volumes:
+      - "$FLYWAY_SQL:/flyway/sql"
+    command: -url=jdbc:postgresql://postgres:5432/$POSTGRES_DATABASE_STAGING -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD -connectRetriesInterval=10 -connectRetries=60 migrate
+    networks:
+      - battdb-net
+
+  flyway-production:
+    image: flyway/flyway:9.17.0
+    container_name: flyway-production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      flyway-staging:
+        condition: service_completed_successfully
+    volumes:
+      - "$FLYWAY_SQL:/flyway/sql"
+    command: -url=jdbc:postgresql://postgres:5432/$POSTGRES_DATABASE_PRODUCTION -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD -connectRetriesInterval=10 -connectRetries=60 migrate
+    networks:
+      - battdb-net

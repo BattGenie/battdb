@@ -1,0 +1,7 @@
+---
+- import_playbook: playbooks/Install_Python3.yml
+- import_playbook: playbooks/Install_Docker.yml
+
+- import_playbook: playbooks/Clone_migration_scripts.yml
+
+- import_playbook: playbooks/Docker_BattDB_development_environments.yml
