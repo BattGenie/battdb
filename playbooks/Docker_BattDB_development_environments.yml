@@ -4,6 +4,17 @@
   vars_files:
     - ../variables/postgresql_development_environments.yml
   tasks:
+    - name: Check if battsoft-net network exists
+      become: true
+      command: docker network inspect battsoft-net
+      register: battsoft_net_result
+      ignore_errors: true
+
+    - name: Create battsoft-net network if it does not exist
+      become: true
+      command: docker network create battsoft-net
+      when: battsoft_net_result.rc != 0
+
     - name: Copy docker-compose
       ansible.posix.synchronize:
         src: ../assets/battdb_docker/docker-compose_development_environments.yml
@@ -24,5 +35,5 @@
         POSTGRES_DATABASE_PRODUCTION: "{{ db_name_production }}"
         POSTGRES_PORT: "{{ db_port }}"
         HOME_PATH: "{{ ansible_env.HOME }}"
-        FLYWAY_SQL: "{{ ansible_env.HOME }}/migration_scripts"
+        FLYWAY_SQL: "{{ ansible_env.HOME }}/battdb/migration_scripts"
       shell: docker-compose -f {{ ansible_env.HOME }}/battdb/docker-compose_development_environments.yml up -d

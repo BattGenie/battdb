@@ -1,11 +1,3 @@
-conf/
-.temp/
-
-*.DS_Store
-*.ipynb_checkpoints
-.ipynb_checkpoints/
-.Rhistory
-*.Rhistory
-
 # docker files
 assets/battdb_docker/data
+assets/battdb_docker/.env

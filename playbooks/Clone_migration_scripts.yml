@@ -5,4 +5,4 @@
     - name: Copy Migration Scripts
       ansible.posix.synchronize:
         src: ../assets/migration_scripts
-        dest: "{{ ansible_env.HOME }}/"
+        dest: "{{ ansible_env.HOME }}/battdb/"

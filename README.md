@@ -48,14 +48,21 @@ In order to use Docker Compose, you will need to have the following software ins
     ```
 
 2. Modify the `.env` file, change the environment variables:  
+
+    ```text
     POSTGRES_USER=YOUR_USERNAME  
     POSTGRES_PASSWORD=YOUR_PASSWORD  
     POSTGRES_DATABASE=YOUR_DATABASE  
     POSTGRES_PORT=YOUR_PORT  
+    FLYWAY_SQL=../migration_scripts
+    ```
+
+    Use `FLYWAY_SQL=../migration_scripts_quick` for quick mode.
 
 3. Run Docker Compose:
 
     ```sh
+    docker network create battsoft-net
     docker-compose --env-file .env up -d
     ```
 
@@ -153,4 +160,3 @@ In order to use Ansible, you will need to have the following software installed 
     Please note that --ask-become-pass is used to prompt for the sudo password. However, if you are using AWS EC2 instances, you may not need to use this option as the instances may be configured to allow passwordless sudo access.
 
 4. Wait for the playbook to complete, and the `BattDB` database has been successfully deployed. The data for the database will be stored in the directory `~/battdb/data`.
-
