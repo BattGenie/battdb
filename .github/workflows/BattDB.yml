@@ -1,0 +1,42 @@
+name: BattDB
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # Create a docker external network 
+      - name: Create an external Docker network
+        run: |
+          docker network create battsoft-net
+
+      # In Docker Compose, Flyway depends on Postgres. Therefore, by running the command in this way,
+      # Postgres can be started in the background and Flyway can be executed in the foreground
+      - name: Init test db and run flyway migrate
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: battdb
+          POSTGRES_PORT: 5432
+          FLYWAY_SQL: ../migration_scripts
+        run: |
+          docker-compose -f assets/battdb_docker/docker-compose.yml run flyway
+
+      - name: Check Flyway migration scripts version
+        run: |
+          DOCKER_FLYWAY_VERSION=$(docker exec -i postgres psql -U postgres battdb -t -c "SELECT version FROM flyway_schema_history ORDER BY version DESC LIMIT 1;" | xargs)
+          MIGRATION_SCRIPTS_VERSION=$(ls -1v assets/migration_scripts/ | tail -n 1 | grep -Po 'V\d+(\.\d+)*' | tail -n 1 | sed 's/^V//')
+          echo "Flyway version in Docker: $DOCKER_FLYWAY_VERSION"
+          echo "Flyway version in migration scripts: $MIGRATION_SCRIPTS_VERSION"
+          if [ " $DOCKER_FLYWAY_VERSION" != " $MIGRATION_SCRIPTS_VERSION" ]; then
+            echo "Flyway version in Docker and migration scripts are not the same"
+            exit 1
+          fi
