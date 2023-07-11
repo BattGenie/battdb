@@ -1,9 +1,10 @@
 version: "3.8"
 
 networks:
-  battdb-net:
-    driver: bridge
-
+  battsoft-net:
+    name: battsoft-net
+    external: true
+      
 services:
   postgres:
     image: timescale/timescaledb:2.10.3-pg15
@@ -25,9 +26,9 @@ services:
     ports:
       - "$POSTGRES_PORT:5432"
     volumes:
-      - ./data:/var/lib/postgresql/data
+      - ./data/$POSTGRES_DATABASE/:/var/lib/postgresql/data
     networks:
-      - battdb-net
+      - battsoft-net
 
   flyway:
     image: flyway/flyway:9.17.0
@@ -39,4 +40,4 @@ services:
       - "$FLYWAY_SQL:/flyway/sql"
     command: -url=jdbc:postgresql://postgres:5432/$POSTGRES_DATABASE -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD -connectRetriesInterval=10 -connectRetries=60 migrate
     networks:
-      - battdb-net
+      - battsoft-net

@@ -1,8 +1,9 @@
 version: "3.8"
 
 networks:
-  battdb-net:
-    driver: bridge
+  battsoft-net:
+    name: battsoft-net    ### TODO: Need to verify whether the docker network battsoft-net will work with databases that are on a remote/different host
+    external: true
 
 services:
   postgres:
@@ -28,7 +29,7 @@ services:
       - ./data:/var/lib/postgresql/data
       - ./multiple_databases.sh:/docker-entrypoint-initdb.d/multiple_databases.sh
     networks:
-      - battdb-net
+      - battsoft-net
 
   flyway-testing:
     image: flyway/flyway:9.17.0
@@ -40,7 +41,7 @@ services:
       - "$FLYWAY_SQL:/flyway/sql"
     command: -url=jdbc:postgresql://postgres:5432/$POSTGRES_DATABASE_TESTING -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD -connectRetriesInterval=10 -connectRetries=60 migrate
     networks:
-      - battdb-net
+      - battsoft-net
 
   flyway-staging:
     image: flyway/flyway:9.17.0
@@ -54,7 +55,7 @@ services:
       - "$FLYWAY_SQL:/flyway/sql"
     command: -url=jdbc:postgresql://postgres:5432/$POSTGRES_DATABASE_STAGING -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD -connectRetriesInterval=10 -connectRetries=60 migrate
     networks:
-      - battdb-net
+      - battsoft-net
 
   flyway-production:
     image: flyway/flyway:9.17.0
@@ -68,4 +69,4 @@ services:
       - "$FLYWAY_SQL:/flyway/sql"
     command: -url=jdbc:postgresql://postgres:5432/$POSTGRES_DATABASE_PRODUCTION -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD -connectRetriesInterval=10 -connectRetries=60 migrate
     networks:
-      - battdb-net
+      - battsoft-net
