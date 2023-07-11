@@ -24,7 +24,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: battdb
+          POSTGRES_DATABASE: battdb
           POSTGRES_PORT: 5432
           FLYWAY_SQL: ../migration_scripts
         run: |
