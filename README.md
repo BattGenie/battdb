@@ -17,7 +17,10 @@ BattDB is a database based on Timescaledb (Postgres 15 extension) to store batte
     - [Prerequisites](#prerequisites)
     - [Client playbooks](#client-playbooks)
     - [Deployment Steps](#deployment-steps)
-
+  - [SSL](#ssl)
+    - [Key](#key)
+    - [postgresql.conf](#postgresqlconf)
+    - [pg_hba.conf](#pg_hbaconf)
 
 ## Documentation
 
@@ -25,7 +28,7 @@ A .dbml file for the database is available in the diagrams directory. A condense
 
 ## Deployment Options
 
-BattDB can be deployed in following ways: locally using Docker-compose or using the migration scripts on self-hosted or managed Timescaledb server or remotely using Ansible on bare-metal. 
+BattDB can be deployed in following ways: locally using Docker-compose or using the migration scripts on self-hosted or managed Timescaledb server or remotely using Ansible on bare-metal.
 
 ### Local Deployment with Docker Compose
 
@@ -160,3 +163,54 @@ In order to use Ansible, you will need to have the following software installed 
     Please note that --ask-become-pass is used to prompt for the sudo password. However, if you are using AWS EC2 instances, you may not need to use this option as the instances may be configured to allow passwordless sudo access.
 
 4. Wait for the playbook to complete, and the `BattDB` database has been successfully deployed. The data for the database will be stored in the directory `~/battdb/data`.
+
+### SSL
+
+To establish an SSL connection with the database, please refer to the PostgreSQL official documentation:
+
+<https://www.postgresql.org/docs/current/ssl-tcp.html>
+
+#### Key
+
+You will need at least five files:
+
+- root.crt
+- server.crt
+- server.key
+- client.crt
+- client.key
+
+Please place `root.crt`, `server.crt` and `server.key` in the `BattDB/assets/battdb_docker/data/battdb` directory.
+
+#### postgresql.conf
+
+You might need to modify the following content in `postgresql.conf`:
+
+```conf
+ssl = on
+ssl_ca_file = '/var/lib/postgresql/data/root.crt'
+ssl_cert_file = '/var/lib/postgresql/data/server.crt'
+ssl_key_file = '/var/lib/postgresql/data/server.key'
+ssl_ciphers = 'HIGH:MEDIUM:+3DES:!aNULL' # allowed SSL ciphers
+ssl_prefer_server_ciphers = on
+```
+
+#### pg_hba.conf
+
+We recommend adding the following settings:
+
+Allow password login for containers under the same `battsoft-net` Docker network:
+
+```conf
+host all all 172.0.0.0/8 scram-sha-256
+```
+
+External connections should use SSL:
+
+```conf
+hostssl all all all cert
+```
+
+**Restart the docker container to apply the SSL settings.**
+
+Please adjust these configurations based on your requirements and ensure that the specified files and paths are accurate for your setup.
