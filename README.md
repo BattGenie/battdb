@@ -50,7 +50,7 @@ In order to use Docker Compose, you will need to have the following software ins
     cd assets/battdb_docker/
     ```
 
-2. Modify the `.env` file, change the environment variables:  
+2. Create the `.env` file, change the environment variables:  
 
     ```text
     POSTGRES_USER=YOUR_USERNAME  
