@@ -42,3 +42,15 @@ services:
     command: -url=jdbc:postgresql://postgres:5432/$POSTGRES_DATABASE -user=$POSTGRES_USER -password=$POSTGRES_PASSWORD -connectRetriesInterval=10 -connectRetries=60 migrate
     networks:
       - battsoft-net
+
+  schemaspy:
+    image: schemaspy/schemaspy:latest
+    container_name: schemaspy
+    depends_on:
+      flyway:
+        condition: service_completed_successfully
+    volumes:
+      - "../../docs:/output"
+    command: -t pgsql -host postgres -port 5432 -db $POSTGRES_DATABASE -u $POSTGRES_USER -p $POSTGRES_PASSWORD -s public -hq
+    networks:
+      - battsoft-net

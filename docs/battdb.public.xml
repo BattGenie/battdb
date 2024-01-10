@@ -1,0 +1,949 @@
+<?xml version="1.0" encoding="UTF-8"?><database name="battdb" schema="public" type="PostgreSQL - 15.4">
+   <sequences>
+      <sequence increment="1" name="batteries_cell_id_seq" startValue="1"/>
+      <sequence increment="1" name="batteries_meta_batterytype_id_seq" startValue="1"/>
+      <sequence increment="1" name="customers_customer_id_seq" startValue="1"/>
+      <sequence increment="1" name="cycler_monitor_channel_statuses_id_seq" startValue="1"/>
+      <sequence increment="1" name="cyclers_cycler_id_seq" startValue="1"/>
+      <sequence increment="1" name="cyclers_meta_cyclertype_id_seq" startValue="1"/>
+      <sequence increment="1" name="hil_data_hil_data_id_seq" startValue="1"/>
+      <sequence increment="1" name="hil_meta_hil_id_seq" startValue="1"/>
+      <sequence increment="1" name="maccor_fra_data_potentiostat_id_seq" startValue="1"/>
+      <sequence increment="1" name="maccor_fra_set_up_fra_set_up_id_seq" startValue="1"/>
+      <sequence increment="1" name="models_meta_model_type_id_seq" startValue="1"/>
+      <sequence increment="1" name="models_model_id_seq" startValue="1"/>
+      <sequence increment="1" name="modules_meta_moduletype_id_seq" startValue="1"/>
+      <sequence increment="1" name="modules_module_id_seq" startValue="1"/>
+      <sequence increment="1" name="modules_testdata_cyclestats_modules_cyclestats_id_seq" startValue="1"/>
+      <sequence increment="1" name="modules_testdata_meta_module_test_id_seq" startValue="1"/>
+      <sequence increment="1" name="modules_testdata_modules_testdata_id_seq" startValue="1"/>
+      <sequence increment="1" name="potentiostats_meta_potentiostattype_id_seq" startValue="1"/>
+      <sequence increment="1" name="potentiostats_potentiostat_id_seq" startValue="1"/>
+      <sequence increment="1" name="profiles_meta_profile_id_seq" startValue="1"/>
+      <sequence increment="1" name="projects_project_id_seq" startValue="1"/>
+      <sequence increment="1" name="schedules_meta_schedule_id_seq" startValue="1"/>
+      <sequence increment="1" name="sil_data_sil_data_id_seq" startValue="1"/>
+      <sequence increment="1" name="sil_meta_sil_id_seq" startValue="1"/>
+      <sequence increment="1" name="sim_data_sim_data_id_seq" startValue="1"/>
+      <sequence increment="1" name="sim_meta_sim_id_seq" startValue="1"/>
+      <sequence increment="1" name="testdata_cyclestats_cyclestats_id_seq" startValue="1"/>
+      <sequence increment="1" name="testdata_meta_test_id_seq" startValue="1"/>
+      <sequence increment="1" name="testdata_test_data_id_seq" startValue="1"/>
+   </sequences>
+   <tables>
+      <table name="cells" remarks="Stores information for cell instances." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('batteries_cell_id_seq'::regclass)" digits="0" id="0" name="cell_id" nullable="false" remarks="Unique identifier for the cell instance. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="cell_id" foreignKey="audit_validation_meta_cell_id_fkey" implied="false" onDeleteCascade="false" schema="audit" table="validation_meta"/>
+            <child column="cell_id" foreignKey="testdata_meta_cell_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="test_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="cell_type_id" nullable="false" remarks="Refers to the make of the cell defined in cells_meta table." size="10" type="int4" typeCode="4">
+            <parent column="cell_type_id" foreignKey="batteries_batterytype_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="cells_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="batch_number" nullable="true" remarks="Batch number of the cells from manufacturer." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="label" nullable="true" remarks="The label written on the cell for internal use." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="date_received" nullable="true" remarks="Date the cell was received by the lab." size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="comments" nullable="true" remarks="Any comments about the cell." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="date_manufactured" nullable="true" remarks="Date the cell was created by the manufacturer." size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="manufacturer_sn" nullable="true" remarks="Manufacturer's serial number of the cell printed on the cell." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="dimensions" nullable="true" remarks="Dimensions of the cell instance. For pouch cells, H x W x L in mm. For cyclindrical cells, r x H in mm. For example, '{&quot;x_mm&quot;:54.25, &quot;y_mm&quot;:106.96, &quot;z_mm&quot;:3.19}' for a pouch cell and '{&quot;x_mm&quot;:54.25, &quot;y_mm&quot;:106.96, &quot;z_mm&quot;:3.19}' for a cyclindrical cell." size="2147483647" type="jsonb" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="8" id="9" name="weight_g" nullable="true" remarks="Weight in grams." size="8" type="float4" typeCode="7"/>
+         <column autoUpdated="false" defaultValue="null" digits="8" id="10" name="first_received_at_voltage_mv" nullable="true" remarks="Voltage of the cell prior to testing." size="8" type="float4" typeCode="7"/>
+         <primaryKey column="cell_id" sequenceNumberInPK="1"/>
+         <index name="cell_id" unique="true">
+            <column ascending="true" name="cell_id"/>
+         </index>
+         <index name="batterytype_label_id" unique="true">
+            <column ascending="true" name="cell_type_id"/>
+            <column ascending="true" name="label"/>
+         </index>
+      </table>
+      <table name="cells_meta" remarks="Stores information for types of cells." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('batteries_meta_batterytype_id_seq'::regclass)" digits="0" id="0" name="cell_type_id" nullable="false" remarks="Unique identifier for the cell type. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="cell_type_id" foreignKey="batteries_batterytype_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="cells"/>
+            <child column="cell_type_id" foreignKey="models_meta_cell_type_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="models_meta"/>
+            <child column="batterytype_id" foreignKey="modules_meta_batterytype_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="modules_meta"/>
+            <child column="cell_type_id" foreignKey="profiles_meta_batterytype_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="profiles_meta"/>
+            <child column="cell_type_id" foreignKey="sil_meta_batterytype_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="sil_meta"/>
+            <child column="cell_type_id" foreignKey="sim_meta_cell_type_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="sim_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="manufacturer" nullable="true" remarks="Manufacturer of the cell." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="manufacturer_pn" nullable="true" remarks="Part number of the cell from the manufacturer." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="form_factor" nullable="true" remarks="Geometry of the cell, e.g. cylindrical, pouch, prismatic, coin." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="capacity_mah" nullable="true" remarks="Rated capacity of the cell in mAh." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="chemistry" nullable="true" remarks="Electrode and electrolyte material." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="dimensions" nullable="true" remarks="Dimensions of the cell type. For pouch cells, H x W x L in mm. For cyclindrical cells, r x H in mm. For example, '{&quot;x_mm&quot;:54.25, &quot;y_mm&quot;:106.96, &quot;z_mm&quot;:3.19}' for a pouch cell and '{&quot;x_mm&quot;:54.25, &quot;y_mm&quot;:106.96, &quot;z_mm&quot;:3.19}' for a cyclindrical cell." size="2147483647" type="jsonb" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="datasheet" nullable="true" remarks="Datasheet for the cell type. BattETL will convert the pdf file to binary data and store it in the database." size="2147483647" type="bytea" typeCode="-2"/>
+         <primaryKey column="cell_type_id" sequenceNumberInPK="1"/>
+         <index name="batterytype_id" unique="true">
+            <column ascending="true" name="cell_type_id"/>
+         </index>
+         <index name="unique_manufacturer_and_pn" unique="true">
+            <column ascending="true" name="manufacturer"/>
+            <column ascending="true" name="manufacturer_pn"/>
+         </index>
+      </table>
+      <table name="customers" remarks="Tracks customers." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('customers_customer_id_seq'::regclass)" digits="0" id="0" name="customer_id" nullable="false" remarks="Unique identifier for the customer. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="customer_id" foreignKey="projects_customer_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="projects"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="customer_name" nullable="true" remarks="Name of the customer." size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="customer_id" sequenceNumberInPK="1"/>
+         <index name="customers_pkey" unique="true">
+            <column ascending="true" name="customer_id"/>
+         </index>
+         <index name="customers_customer_name_key" unique="true">
+            <column ascending="true" name="customer_name"/>
+         </index>
+      </table>
+      <table name="cycler_rt_channel_statuses" remarks="Stores real-time information for cycler channels." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('cycler_monitor_channel_statuses_id_seq'::regclass)" digits="0" id="0" name="id" nullable="false" remarks="Unique identifier for the cycler channel status. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="hil_data_id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="hil_data"/>
+            <child column="sil_data_id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="sil_data"/>
+            <child column="test_data_id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="sil_data"/>
+            <child column="sim_data_id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="sim_data"/>
+            <child column="test_data_id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="sim_data"/>
+            <child column="test_data_id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="test_data"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="cycler_id" nullable="false" remarks="Refers to the cycler instance defined in cyclers table." size="10" type="int4" typeCode="4">
+            <parent column="cycler_id" foreignKey="cycler_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="cyclers"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="channel" nullable="false" remarks="Channel number of the cycler." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="status" nullable="false" remarks="Status of the cycler channel. Can be idle, rest, charge, discharge, problem, or other." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="cycle" nullable="true" remarks="Cycle number of the cycler channel." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="step" nullable="true" remarks="Step number of the cycler channel." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="test_time_s" nullable="true" remarks="Test time in seconds." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="step_time_s" nullable="true" remarks="Step time in seconds." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="voltage_mv" nullable="true" remarks="Voltage in mV." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="current_ma" nullable="true" remarks="Current in mA." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="charge_capacity_mah" nullable="true" remarks="Charge capacity in mAh." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="discharge_capacity_mah" nullable="true" remarks="Discharge capacity in mAh." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="charge_energy_mwh" nullable="true" remarks="Charge energy in mWh." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="discharge_energy_mwh" nullable="true" remarks="Discharge energy in mWh." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="14" name="timestamp_s" nullable="false" remarks="Timestamp in seconds." size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="15" name="insert_time" nullable="false" remarks="Timestamp of insertion into the database." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="other_details" nullable="true" remarks="Other details about the cycler channel status." size="2147483647" type="jsonb" typeCode="1111"/>
+         <primaryKey column="id" sequenceNumberInPK="1"/>
+         <index name="cycler_monitor_channel_statuses_pkey" unique="true">
+            <column ascending="true" name="id"/>
+         </index>
+         <checkConstraint constraint="((status = ANY (ARRAY['idle'::text, 'rest'::text, 'charge'::text, 'discharge'::text, 'problem'::text, 'finished'::text, 'other'::text])))" name="status_vals"/>
+      </table>
+      <table name="cyclers" remarks="Stores information for cycler instances." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('cyclers_cycler_id_seq'::regclass)" digits="0" id="0" name="cycler_id" nullable="false" remarks="Unique identifier for the cycler instance. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="cycler_id" foreignKey="cycler_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="cycler_rt_channel_statuses"/>
+            <child column="cycler_id" foreignKey="cycler_id_testdata_meta" implied="false" onDeleteCascade="false" schema="public" table="test_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="cycler_type_id" nullable="false" remarks="Refers to the make of the cycler defined in cyclers_meta table." size="10" type="int4" typeCode="4">
+            <parent column="cycler_type_id" foreignKey="cycles_to_cyclers_meta_fk" implied="false" onDeleteCascade="false" schema="public" table="cyclers_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="sn" nullable="true" remarks="Serial number of the cycler from the manufacturer." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="calibration_date" nullable="true" remarks="Date of last calibration." size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="calibration_due_date" nullable="true" remarks="Date of next calibration." size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="location" nullable="true" remarks="Lab where cycler is located." size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="cycler_id" sequenceNumberInPK="1"/>
+         <index name="cyclers_pkey" unique="true">
+            <column ascending="true" name="cycler_id"/>
+         </index>
+      </table>
+      <table name="cyclers_meta" remarks="Stores information for types of cycler." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('cyclers_meta_cyclertype_id_seq'::regclass)" digits="0" id="0" name="cycler_type_id" nullable="false" remarks="Unique identifier for the cycler type. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="cycler_type_id" foreignKey="cycles_to_cyclers_meta_fk" implied="false" onDeleteCascade="false" schema="public" table="cyclers"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="manufacturer" nullable="true" remarks="Manufacturer of the cycler." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="model" nullable="true" remarks="Model of the cycler." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="datasheet" nullable="true" remarks="Datasheet for the cycler." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="num_channels" nullable="true" remarks="Number of channels in the cycler." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="lower_current_limit_a" nullable="true" remarks="Lower current limit in A." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="upper_current_limit_a" nullable="true" remarks="Upper current limit in A." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="lower_voltage_limit_v" nullable="true" remarks="Lower voltage limit in V." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="upper_voltage_limit_v" nullable="true" remarks="Upper voltage limit in V." size="0" type="numeric" typeCode="2"/>
+         <primaryKey column="cycler_type_id" sequenceNumberInPK="1"/>
+         <index name="cyclers_meta_pkey" unique="true">
+            <column ascending="true" name="cycler_type_id"/>
+         </index>
+         <index name="cyclers_meta_manufacturer_model_key" unique="true">
+            <column ascending="true" name="manufacturer"/>
+            <column ascending="true" name="model"/>
+         </index>
+      </table>
+      <table name="eis_data" remarks="Stores potentiostat test data." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('maccor_fra_data_potentiostat_id_seq'::regclass)" digits="0" id="0" name="potentiostat_id" nullable="false" remarks="Unique identifier for the potentiostat data point. Auto-incremented upon insertion." size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="test_id" nullable="true" remarks="Refers to the potentiostat test defined in test_meta table." size="10" type="int4" typeCode="4">
+            <parent column="test_id" foreignKey="maccor_fra_data_test_id_to_testdata_meta" implied="false" onDeleteCascade="false" schema="public" table="test_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="cycle" nullable="true" remarks="The test cycle the EIS measurement was made at." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="step" nullable="true" remarks="The test step the EIS masurement was made at." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="soc" nullable="true" remarks="The state of charge (SoC) the EIS measurement was made at." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="freq_hz" nullable="true" remarks="The frequency of the EIS pulse." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="time_s" nullable="true" remarks="The test time the EIS measurement was made at." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="z_real_ohm" nullable="true" remarks="The real part of the measured EIS impedance." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="z_imaginary_ohm" nullable="true" remarks="The imaginary part of the measured EIS impedance." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="phase_angle_degree" nullable="true" remarks="The phase angle of the measured EIS impedance." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="c" nullable="true" remarks="The capacitance of the EIS measurement." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="voltage_magnitude_mv" nullable="true" remarks="The magnitude of the voltage of the EIS measurement." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="current_magnitude_ma" nullable="true" remarks="The magnitude of the current of the EIS measurement." size="0" type="numeric" typeCode="2"/>
+         <primaryKey column="potentiostat_id" sequenceNumberInPK="1"/>
+         <index name="maccor_fra_data_pkey" unique="true">
+            <column ascending="true" name="potentiostat_id"/>
+         </index>
+      </table>
+      <table name="eis_meta" remarks="Stores high-level information about the potentiostat test." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('maccor_fra_set_up_fra_set_up_id_seq'::regclass)" digits="0" id="0" name="eis_id" nullable="false" remarks="Unique identifier for the EIS test. Auto-incremented upon insertion." size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="file_name" nullable="true" remarks="file name that defines the EIS setup." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="mode" nullable="true" remarks="The mode of the EIS measurement can be galvanostatic and potentiostatic." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="amplitude_mv" nullable="true" remarks="The voltage amplitude of the EIS pulse." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="amplitude_ma" nullable="true" remarks="The current amplitude of the EIS pulse." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="initial_frequency_hz" nullable="true" remarks="The starting frequency of the EIS sweep." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="final_frequency_hz" nullable="true" remarks="The ending frequency of the EIS sweep." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="steps_per_decade" nullable="true" remarks="How many EIS measurements to make per decade of the current sweep." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="current_range" nullable="true" remarks="The current range of the EIS measurements." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="current_limit_a" nullable="true" remarks="The upper current limit of the EIS measurements." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="data_quality" nullable="true" remarks="The data quality measurment setting for the Gamry potentiostat." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="measurement_delay_s" nullable="true" remarks="The delay between EIS measurements." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="bandwidth" nullable="true" remarks="The bandwidth of the EIS measurements." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="dc_voltage_v" nullable="true" remarks="The DC voltage of the EIS measurements." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="dc_vs_open_circuit" nullable="true" remarks="The DC vs open circuit value for the EIS measurements." size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="eis_id" sequenceNumberInPK="1"/>
+         <index name="maccor_fra_set_up_pkey" unique="true">
+            <column ascending="true" name="eis_id"/>
+         </index>
+         <index name="maccor_fra_set_up_file_name_key" unique="true">
+            <column ascending="true" name="file_name"/>
+         </index>
+      </table>
+      <table name="flyway_schema_history" remarks="Schema history table" schema="public" type="TABLE">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="installed_rank" nullable="false" remarks="The version of the flyway schema." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="version" nullable="true" remarks="The version of the BattDB schema." size="50" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="description" nullable="false" remarks="The description of the BattDB schema." size="200" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="type" nullable="false" remarks="The type of migration." size="20" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="script" nullable="false" remarks="The name of the migration script." size="1000" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="checksum" nullable="true" remarks="The checksum of the migration script." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="installed_by" nullable="false" remarks="The user who installed the migration script." size="100" type="varchar" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="7" name="installed_on" nullable="false" remarks="The date the migration script was installed." size="29" type="timestamp" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="execution_time" nullable="false" remarks="The time it took to execute the migration script." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="success" nullable="false" remarks="Whether or not the migration script was successful." size="1" type="bool" typeCode="-7"/>
+         <primaryKey column="installed_rank" sequenceNumberInPK="1"/>
+         <index name="flyway_schema_history_pk" unique="true">
+            <column ascending="true" name="installed_rank"/>
+         </index>
+         <index name="flyway_schema_history_s_idx" unique="false">
+            <column ascending="true" name="success"/>
+         </index>
+      </table>
+      <table name="hil_data" remarks="Stores test data from hardware-in-the-loop test." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('hil_data_hil_data_id_seq'::regclass)" digits="0" id="0" name="hil_data_id" nullable="false" remarks="Unique identifier for the HIL data point. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <parent column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="cycler_rt_channel_statuses"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="hil_id" nullable="true" remarks="Refers to the HIL test defined in hil_meta table." size="10" type="int4" typeCode="4">
+            <parent column="hil_id" foreignKey="hil_data_hil_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="hil_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="cycle" nullable="true" remarks="The cycle number of the data point. Tracks number of charge/discharge cycles." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="step" nullable="true" remarks="The step number of the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="step_time_s" nullable="true" remarks="The time in seconds since the start of the step, ignoring pauses." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="test_time_s" nullable="true" remarks="The time in seconds since the start of the test, ignoring pauses." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="measured_voltage_mv" nullable="true" remarks="The voltage measured by the cycler during the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="modeled_voltage_mv" nullable="true" remarks="The voltage predicted by the model during the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="voltage_delta_mv" nullable="true" remarks="The difference between the measured and modeled voltage during the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="measured_current_ma" nullable="true" remarks="The current measured by the cycler during the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="modeled_current_ma" nullable="true" remarks="The current predicted by the model during the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="11" name="datetime" nullable="true" remarks="The date and time the data point was recorded by cycler. Matches timezone of cycler." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="unixtime_s" nullable="true" remarks="The time in seconds since the Unix epoch (January 1, 1970). Calculated from recorded_datetime." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="status" nullable="true" remarks="The status of the cycler during the data point. Can be idle, rest, charge, discharge, problem, or other." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="overpotential_mv" nullable="true" remarks="The overpotential of the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="solution_time_ms" nullable="true" remarks="The solution time of the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="model_states" nullable="true" remarks="The model states during the data point." size="131089" type="_numeric" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="17" name="insert_time" nullable="false" remarks="Timestamp of insertion into the database." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="other_details" nullable="true" remarks="Other details about the HIL data point." size="2147483647" type="jsonb" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="reported_charge_capacity_mah" nullable="true" remarks="The charge capacity reported by the cycler at the end of the cycle." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="reported_discharge_capacity_mah" nullable="true" remarks="The discharge capacity reported by the cycler at the end of the cycle." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="reported_charge_energy_mwh" nullable="true" remarks="The charge energy reported by the cycler at the end of the cycle." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="reported_discharge_energy_mwh" nullable="true" remarks="The discharge energy reported by the cycler at the end of the cycle." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="state_of_charge" nullable="true" remarks="The state of charge reported by the cycler at the end of the cycle." size="0" type="numeric" typeCode="2"/>
+         <index name="hil_data_insert_time_idx" unique="false">
+            <column ascending="false" name="insert_time"/>
+         </index>
+      </table>
+      <table name="hil_data_summary_10min" numRows="0" remarks="Materialized view of hil_data table aggregated by 10 minute intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_33.tenmin,&#10;    _materialized_hypertable_33.hil_id,&#10;    _materialized_hypertable_33.tenmin_solution_time_ms,&#10;    _materialized_hypertable_33.tenmin_state_of_charge,&#10;    _materialized_hypertable_33.tenmin_measured_voltage_mv,&#10;    _materialized_hypertable_33.tenmin_modeled_voltage_mv,&#10;    _materialized_hypertable_33.tenmin_measured_current_ma,&#10;    _materialized_hypertable_33.tenmin_modeled_current_ma,&#10;    _materialized_hypertable_33.tenmin_overpotential_mv,&#10;    _materialized_hypertable_33.tenmin_voltage_delta_mv,&#10;    _materialized_hypertable_33.tenmin_reported_charge_capacity_mah,&#10;    _materialized_hypertable_33.tenmin_reported_discharge_capacity_mah,&#10;    _materialized_hypertable_33.tenmin_reported_charge_energy_mwh,&#10;    _materialized_hypertable_33.tenmin_reported_discharge_energy_mwh&#10;   FROM _timescaledb_internal._materialized_hypertable_33&#10;  WHERE (_materialized_hypertable_33.tenmin &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(33)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('00:10:00'::interval, hil_data.insert_time) AS tenmin,&#10;    hil_data.hil_id,&#10;    avg(hil_data.solution_time_ms) AS tenmin_solution_time_ms,&#10;    avg(hil_data.state_of_charge) AS tenmin_state_of_charge,&#10;    avg(hil_data.measured_voltage_mv) AS tenmin_measured_voltage_mv,&#10;    avg(hil_data.modeled_voltage_mv) AS tenmin_modeled_voltage_mv,&#10;    avg(hil_data.measured_current_ma) AS tenmin_measured_current_ma,&#10;    avg(hil_data.modeled_current_ma) AS tenmin_modeled_current_ma,&#10;    avg(hil_data.overpotential_mv) AS tenmin_overpotential_mv,&#10;    avg(hil_data.voltage_delta_mv) AS tenmin_voltage_delta_mv,&#10;    avg(hil_data.reported_charge_capacity_mah) AS tenmin_reported_charge_capacity_mah,&#10;    avg(hil_data.reported_discharge_capacity_mah) AS tenmin_reported_discharge_capacity_mah,&#10;    avg(hil_data.reported_charge_energy_mwh) AS tenmin_reported_charge_energy_mwh,&#10;    avg(hil_data.reported_discharge_energy_mwh) AS tenmin_reported_discharge_energy_mwh&#10;   FROM hil_data&#10;  WHERE (hil_data.insert_time &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(33)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('00:10:00'::interval, hil_data.insert_time)), hil_data.hil_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="tenmin" nullable="true" remarks="The datetime rounded to the nearest 10 minute interval." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="hil_id" nullable="true" remarks="Refers to the HIL test defined in hil_meta table." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="tenmin_solution_time_ms" nullable="true" remarks="The average solution time of the HIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="tenmin_state_of_charge" nullable="true" remarks="The average state of charge of the HIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="tenmin_measured_voltage_mv" nullable="true" remarks="The average measured voltage of the HIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="tenmin_modeled_voltage_mv" nullable="true" remarks="The average modeled voltage of the HIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="tenmin_measured_current_ma" nullable="true" remarks="The average measured current of the HIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="tenmin_modeled_current_ma" nullable="true" remarks="The average modeled current of the HIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="tenmin_overpotential_mv" nullable="true" remarks="The average overpotential of the HIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="tenmin_voltage_delta_mv" nullable="true" remarks="The average voltage delta of the HIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="tenmin_reported_charge_capacity_mah" nullable="true" remarks="The average reported charge capacity of the HIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="tenmin_reported_discharge_capacity_mah" nullable="true" remarks="The average reported discharge capacity of the HIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="tenmin_reported_charge_energy_mwh" nullable="true" remarks="The average reported charge energy of the HIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="tenmin_reported_discharge_energy_mwh" nullable="true" remarks="The average reported discharge energy of the HIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="hil_data_summary_30s" numRows="0" remarks="Materialized view of hil_data table aggregated by 30 second intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_45.thirtysec,&#10;    _materialized_hypertable_45.hil_id,&#10;    _materialized_hypertable_45.thirtysec_solution_time_ms,&#10;    _materialized_hypertable_45.thirtysec_state_of_charge,&#10;    _materialized_hypertable_45.thirtysec_measured_voltage_mv,&#10;    _materialized_hypertable_45.thirtysec_modeled_voltage_mv,&#10;    _materialized_hypertable_45.thirtysec_measured_current_ma,&#10;    _materialized_hypertable_45.thirtysec_modeled_current_ma,&#10;    _materialized_hypertable_45.thirtysec_overpotential_mv,&#10;    _materialized_hypertable_45.thirtysec_voltage_delta_mv,&#10;    _materialized_hypertable_45.thirtysec_reported_charge_capacity_mah,&#10;    _materialized_hypertable_45.thirtysec_reported_discharge_capacity_mah,&#10;    _materialized_hypertable_45.thirtysec_reported_charge_energy_mwh,&#10;    _materialized_hypertable_45.thirtysec_reported_discharge_energy_mwh&#10;   FROM _timescaledb_internal._materialized_hypertable_45&#10;  WHERE (_materialized_hypertable_45.thirtysec &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(45)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('00:00:30'::interval, hil_data.insert_time) AS thirtysec,&#10;    hil_data.hil_id,&#10;    avg(hil_data.solution_time_ms) AS thirtysec_solution_time_ms,&#10;    avg(hil_data.state_of_charge) AS thirtysec_state_of_charge,&#10;    avg(hil_data.measured_voltage_mv) AS thirtysec_measured_voltage_mv,&#10;    avg(hil_data.modeled_voltage_mv) AS thirtysec_modeled_voltage_mv,&#10;    avg(hil_data.measured_current_ma) AS thirtysec_measured_current_ma,&#10;    avg(hil_data.modeled_current_ma) AS thirtysec_modeled_current_ma,&#10;    avg(hil_data.overpotential_mv) AS thirtysec_overpotential_mv,&#10;    avg(hil_data.voltage_delta_mv) AS thirtysec_voltage_delta_mv,&#10;    avg(hil_data.reported_charge_capacity_mah) AS thirtysec_reported_charge_capacity_mah,&#10;    avg(hil_data.reported_discharge_capacity_mah) AS thirtysec_reported_discharge_capacity_mah,&#10;    avg(hil_data.reported_charge_energy_mwh) AS thirtysec_reported_charge_energy_mwh,&#10;    avg(hil_data.reported_discharge_energy_mwh) AS thirtysec_reported_discharge_energy_mwh&#10;   FROM hil_data&#10;  WHERE (hil_data.insert_time &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(45)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('00:00:30'::interval, hil_data.insert_time)), hil_data.hil_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="thirtysec" nullable="true" remarks="The datetime rounded to the nearest 30 second interval." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="hil_id" nullable="true" remarks="Refers to the HIL test defined in hil_meta table." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="thirtysec_solution_time_ms" nullable="true" remarks="The average solution time of the HIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="thirtysec_state_of_charge" nullable="true" remarks="The average state of charge of the HIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="thirtysec_measured_voltage_mv" nullable="true" remarks="The average measured voltage of the HIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="thirtysec_modeled_voltage_mv" nullable="true" remarks="The average modeled voltage of the HIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="thirtysec_measured_current_ma" nullable="true" remarks="The average measured current of the HIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="thirtysec_modeled_current_ma" nullable="true" remarks="The average modeled current of the HIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="thirtysec_overpotential_mv" nullable="true" remarks="The average overpotential of the HIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="thirtysec_voltage_delta_mv" nullable="true" remarks="The average voltage delta of the HIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="thirtysec_reported_charge_capacity_mah" nullable="true" remarks="The average reported charge capacity of the HIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="thirtysec_reported_discharge_capacity_mah" nullable="true" remarks="The average reported discharge capacity of the HIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="thirtysec_reported_charge_energy_mwh" nullable="true" remarks="The average reported charge energy of the HIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="thirtysec_reported_discharge_energy_mwh" nullable="true" remarks="The average reported discharge energy of the HIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="hil_data_summary_daily" numRows="0" remarks="Materialized view of hil_data table aggregated by daily intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_35.day,&#10;    _materialized_hypertable_35.hil_id,&#10;    _materialized_hypertable_35.day_solution_time_ms,&#10;    _materialized_hypertable_35.day_state_of_charge,&#10;    _materialized_hypertable_35.day_measured_voltage_mv,&#10;    _materialized_hypertable_35.day_modeled_voltage_mv,&#10;    _materialized_hypertable_35.day_measured_current_ma,&#10;    _materialized_hypertable_35.day_modeled_current_ma,&#10;    _materialized_hypertable_35.day_overpotential_mv,&#10;    _materialized_hypertable_35.day_voltage_delta_mv,&#10;    _materialized_hypertable_35.day_reported_charge_capacity_mah,&#10;    _materialized_hypertable_35.day_reported_discharge_capacity_mah,&#10;    _materialized_hypertable_35.day_reported_charge_energy_mwh,&#10;    _materialized_hypertable_35.day_reported_discharge_energy_mwh&#10;   FROM _timescaledb_internal._materialized_hypertable_35&#10;  WHERE (_materialized_hypertable_35.day &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(35)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('1 day'::interval, hil_data.insert_time) AS day,&#10;    hil_data.hil_id,&#10;    avg(hil_data.solution_time_ms) AS day_solution_time_ms,&#10;    avg(hil_data.state_of_charge) AS day_state_of_charge,&#10;    avg(hil_data.measured_voltage_mv) AS day_measured_voltage_mv,&#10;    avg(hil_data.modeled_voltage_mv) AS day_modeled_voltage_mv,&#10;    avg(hil_data.measured_current_ma) AS day_measured_current_ma,&#10;    avg(hil_data.modeled_current_ma) AS day_modeled_current_ma,&#10;    avg(hil_data.overpotential_mv) AS day_overpotential_mv,&#10;    avg(hil_data.voltage_delta_mv) AS day_voltage_delta_mv,&#10;    avg(hil_data.reported_charge_capacity_mah) AS day_reported_charge_capacity_mah,&#10;    avg(hil_data.reported_discharge_capacity_mah) AS day_reported_discharge_capacity_mah,&#10;    avg(hil_data.reported_charge_energy_mwh) AS day_reported_charge_energy_mwh,&#10;    avg(hil_data.reported_discharge_energy_mwh) AS day_reported_discharge_energy_mwh&#10;   FROM hil_data&#10;  WHERE (hil_data.insert_time &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(35)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('1 day'::interval, hil_data.insert_time)), hil_data.hil_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="day" nullable="true" remarks="The datetime rounded to the nearest day." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="hil_id" nullable="true" remarks="Refers to the HIL test defined in hil_meta table." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="day_solution_time_ms" nullable="true" remarks="The average solution time of the HIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="day_state_of_charge" nullable="true" remarks="The average state of charge of the HIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="day_measured_voltage_mv" nullable="true" remarks="The average measured voltage of the HIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="day_modeled_voltage_mv" nullable="true" remarks="The average modeled voltage of the HIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="day_measured_current_ma" nullable="true" remarks="The average measured current of the HIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="day_modeled_current_ma" nullable="true" remarks="The average modeled current of the HIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="day_overpotential_mv" nullable="true" remarks="The average overpotential of the HIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="day_voltage_delta_mv" nullable="true" remarks="The average voltage delta of the HIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="day_reported_charge_capacity_mah" nullable="true" remarks="The average reported charge capacity of the HIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="day_reported_discharge_capacity_mah" nullable="true" remarks="The average reported discharge capacity of the HIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="day_reported_charge_energy_mwh" nullable="true" remarks="The average reported charge energy of the HIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="day_reported_discharge_energy_mwh" nullable="true" remarks="The average reported discharge energy of the HIL test for the day." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="hil_data_summary_hourly" numRows="0" remarks="Materialized view of hil_data table aggregated by hourly intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_34.hour,&#10;    _materialized_hypertable_34.hil_id,&#10;    _materialized_hypertable_34.hour_solution_time_ms,&#10;    _materialized_hypertable_34.hour_state_of_charge,&#10;    _materialized_hypertable_34.hour_measured_voltage_mv,&#10;    _materialized_hypertable_34.hour_modeled_voltage_mv,&#10;    _materialized_hypertable_34.hour_measured_current_ma,&#10;    _materialized_hypertable_34.hour_modeled_current_ma,&#10;    _materialized_hypertable_34.hour_overpotential_mv,&#10;    _materialized_hypertable_34.hour_voltage_delta_mv,&#10;    _materialized_hypertable_34.hour_reported_charge_capacity_mah,&#10;    _materialized_hypertable_34.hour_reported_discharge_capacity_mah,&#10;    _materialized_hypertable_34.hour_reported_charge_energy_mwh,&#10;    _materialized_hypertable_34.hour_reported_discharge_energy_mwh&#10;   FROM _timescaledb_internal._materialized_hypertable_34&#10;  WHERE (_materialized_hypertable_34.hour &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(34)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('01:00:00'::interval, hil_data.insert_time) AS hour,&#10;    hil_data.hil_id,&#10;    avg(hil_data.solution_time_ms) AS hour_solution_time_ms,&#10;    avg(hil_data.state_of_charge) AS hour_state_of_charge,&#10;    avg(hil_data.measured_voltage_mv) AS hour_measured_voltage_mv,&#10;    avg(hil_data.modeled_voltage_mv) AS hour_modeled_voltage_mv,&#10;    avg(hil_data.measured_current_ma) AS hour_measured_current_ma,&#10;    avg(hil_data.modeled_current_ma) AS hour_modeled_current_ma,&#10;    avg(hil_data.overpotential_mv) AS hour_overpotential_mv,&#10;    avg(hil_data.voltage_delta_mv) AS hour_voltage_delta_mv,&#10;    avg(hil_data.reported_charge_capacity_mah) AS hour_reported_charge_capacity_mah,&#10;    avg(hil_data.reported_discharge_capacity_mah) AS hour_reported_discharge_capacity_mah,&#10;    avg(hil_data.reported_charge_energy_mwh) AS hour_reported_charge_energy_mwh,&#10;    avg(hil_data.reported_discharge_energy_mwh) AS hour_reported_discharge_energy_mwh&#10;   FROM hil_data&#10;  WHERE (hil_data.insert_time &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(34)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('01:00:00'::interval, hil_data.insert_time)), hil_data.hil_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="hour" nullable="true" remarks="The datetime rounded to the nearest hour." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="hil_id" nullable="true" remarks="Refers to the HIL test defined in hil_meta table." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="hour_solution_time_ms" nullable="true" remarks="The average solution time of the HIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="hour_state_of_charge" nullable="true" remarks="The average state of charge of the HIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="hour_measured_voltage_mv" nullable="true" remarks="The average measured voltage of the HIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="hour_modeled_voltage_mv" nullable="true" remarks="The average modeled voltage of the HIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="hour_measured_current_ma" nullable="true" remarks="The average measured current of the HIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="hour_modeled_current_ma" nullable="true" remarks="The average modeled current of the HIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="hour_overpotential_mv" nullable="true" remarks="The average overpotential of the HIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="hour_voltage_delta_mv" nullable="true" remarks="The average voltage delta of the HIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="hour_reported_charge_capacity_mah" nullable="true" remarks="The average reported charge capacity of the HIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="hour_reported_discharge_capacity_mah" nullable="true" remarks="The average reported discharge capacity of the HIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="hour_reported_charge_energy_mwh" nullable="true" remarks="The average reported charge energy of the HIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="hour_reported_discharge_energy_mwh" nullable="true" remarks="The average reported discharge energy of the HIL test for the hour." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="hil_meta" remarks="Stores high-level information about the hardware-in-the-loop test." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('hil_meta_hil_id_seq'::regclass)" digits="0" id="0" name="hil_id" nullable="false" remarks="Unique identifier for the HIL test. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="hil_id" foreignKey="hil_data_hil_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="hil_data"/>
+         </column>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="1" name="launched_at" nullable="false" remarks="The date and time the HIL test was launched." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="status" nullable="true" remarks="The status of the HIL test." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="test_name" nullable="true" remarks="The name of the HIL test." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="schedule_name" nullable="true" remarks="The name of the schedule file used in cycler software." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="configs" nullable="true" remarks="The configuration files used in the test." size="2147483647" type="jsonb" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="other_details" nullable="true" remarks="Other details about the HIL test." size="2147483647" type="jsonb" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="user_id" nullable="false" remarks="The user who launched the HIL test." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="cell_id" nullable="true" remarks="The cell used in the HIL test. References the cell_id in the cells table." size="10" type="int4" typeCode="4"/>
+         <primaryKey column="hil_id" sequenceNumberInPK="1"/>
+         <index name="hil_meta_pkey" unique="true">
+            <column ascending="true" name="hil_id"/>
+         </index>
+      </table>
+      <table name="models" remarks="Stores information for model instances." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('models_model_id_seq'::regclass)" digits="0" id="0" name="model_id" nullable="false" remarks="Unique identifier for the model instance. Auto-incremented upon insertion." size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="model_name" nullable="true" remarks="The name of the model." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="model_type_id" nullable="true" remarks="Refers to the make of the model defined in models_meta table." size="10" type="int4" typeCode="4">
+            <parent column="model_type_id" foreignKey="models_model_type_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="models_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="model_physical_params" nullable="true" remarks="Physical parameters of the model." size="2147483647" type="_model_param_t" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="model_mathematical_params" nullable="true" remarks="Mathematical parameters of the model." size="2147483647" type="_model_param_t" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="model_computational_params" nullable="true" remarks="Computational parameters of the model." size="2147483647" type="_model_param_t" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="model_version" nullable="true" remarks="The version of the model." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="model_stage" nullable="false" remarks="The stage of the model. Can be dev, stag, or prod." size="2147483647" type="model_stage_e" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="other_details" nullable="true" remarks="Other details about the model." size="2147483647" type="jsonb" typeCode="1111"/>
+         <primaryKey column="model_id" sequenceNumberInPK="1"/>
+         <index name="models_pkey" unique="true">
+            <column ascending="true" name="model_id"/>
+         </index>
+         <index name="models_prod_version_idx" unique="true">
+            <column ascending="true" name="model_type_id"/>
+         </index>
+      </table>
+      <table name="models_meta" remarks="Stores information for types of models." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('models_meta_model_type_id_seq'::regclass)" digits="0" id="0" name="model_type_id" nullable="false" remarks="Unique identifier for the model type. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="model_type_id" foreignKey="models_model_type_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="models"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="model_type" nullable="false" remarks="The type of model. Can be lookup_table, ecm, spm, tank, p2d, or other." size="2147483647" type="model_type_e" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="cell_type_id" nullable="true" remarks="The type of battery the model is for. References the cell_type_id in the cells_meta table." size="10" type="int4" typeCode="4">
+            <parent column="cell_type_id" foreignKey="models_meta_cell_type_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="cells_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="model_type_name" nullable="true" remarks="The name of the model type." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="model_type_parameters" nullable="true" remarks="The parameters of the model type." size="2147483647" type="jsonb" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="other_details" nullable="true" remarks="Other details about the model type." size="2147483647" type="jsonb" typeCode="1111"/>
+         <primaryKey column="model_type_id" sequenceNumberInPK="1"/>
+         <index name="models_meta_pkey" unique="true">
+            <column ascending="true" name="model_type_id"/>
+         </index>
+      </table>
+      <table name="modules" remarks="Stores information for module instances." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('modules_module_id_seq'::regclass)" digits="0" id="0" name="module_id" nullable="false" remarks="Unique identifier for the module instance. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="module_id" foreignKey="modules_testdata_meta_module_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="modules_test_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="module_type_id" nullable="false" remarks="Refers to the make of the module defined in modules_meta table." size="10" type="int4" typeCode="4">
+            <parent column="moduletype_id" foreignKey="modules_moduletype_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="modules_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="manufacturer_sn" nullable="true" remarks="Serial number of the module from the manufacturer." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="batch_number" nullable="true" remarks="The manufacturing batch number for the cell (if available)." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="label" nullable="true" remarks="Label of the module." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="date_received" nullable="true" remarks="Date the module was received by lab." size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="data_manufactured" nullable="true" remarks="Date the module was created by the manufacturer." size="13" type="date" typeCode="91"/>
+         <primaryKey column="module_id" sequenceNumberInPK="1"/>
+         <index name="modules_pkey" unique="true">
+            <column ascending="true" name="module_id"/>
+         </index>
+      </table>
+      <table name="modules_meta" remarks="Stores information about types of module." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('modules_meta_moduletype_id_seq'::regclass)" digits="0" id="0" name="moduletype_id" nullable="false" remarks="Unique identifier for the module type. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="module_type_id" foreignKey="modules_moduletype_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="modules"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="manufacturer" nullable="true" remarks="Manufacturer of the module." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="manufacturer_pn" nullable="true" remarks="Part number of the module from the manufacturer." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="capacity_mah" nullable="true" remarks="Rated capacity of the module in mAh." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="cells_in_series" nullable="true" remarks="Number of cells in series." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="cells_in_parallel" nullable="true" remarks="Number of cells in parallel." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="batterytype_id" nullable="true" remarks="Cells that make up the module. Refers to the cell type defined in cells_meta table." size="10" type="int4" typeCode="4">
+            <parent column="cell_type_id" foreignKey="modules_meta_batterytype_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="cells_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="dimensions" nullable="true" remarks="Physical dimensions of the module. Stored in hstore data type that allows for dictionary like behavior. Example for a cylindrical cell: &quot;height&quot;=&gt;&quot;65.00 ± 0.2 mm&quot;, &quot;diameter&quot;=&gt;&quot;18.3 +0.2 / -0.3 mm&quot;" size="2147483647" type="jsonb" typeCode="1111"/>
+         <primaryKey column="moduletype_id" sequenceNumberInPK="1"/>
+         <index name="modules_meta_pkey" unique="true">
+            <column ascending="true" name="moduletype_id"/>
+         </index>
+      </table>
+      <table name="modules_test_data" remarks="Stores test data for tests performed using modules." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('modules_testdata_modules_testdata_id_seq'::regclass)" digits="0" id="0" name="modules_testdata_id" nullable="false" remarks="Unique identifier for the module test data point. Auto-incremented upon insertion." size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="module_test_id" nullable="false" remarks="Refers to the module test defined in modules_test_meta table." size="10" type="int4" typeCode="4">
+            <parent column="module_test_id" foreignKey="modules_testdata_modules_module_test_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="modules_test_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="2" name="datetime" nullable="true" remarks="Date and time (relative to the timezone set on the cycler computer) at the specific sample time." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="unixtime_s" nullable="true" remarks="Date and time converted to unix time (also called 'epoch time') for the specific sample time." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="cycle" nullable="true" remarks="Total number of charge/discharge step pairs the schedule file has completed. Can vary depending on the schedule file." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="tc_counter1" nullable="true" remarks="Counter for loops in loops." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="tc_counter2" nullable="true" remarks="Counter for loops in loops." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="tc_counter3" nullable="true" remarks="Counter for loops in loops." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="tc_counter4" nullable="true" remarks="Counter for loops in loops." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="max_cellvoltage_mv" nullable="true" remarks="Cell in module with the highest voltage." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="min_cellvoltage_mv" nullable="true" remarks="Cell in module with the lowest voltage." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="max_cellvoltage_index" nullable="true" remarks="Index of cell in module with the highest voltage." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="min_cellvoltage_index" nullable="true" remarks="Index of cell in module with the lowest voltage." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="cell_voltage_delta_mv" nullable="true" remarks="Change in voltage from last sample." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="step" nullable="true" remarks="The cycle schedule step for the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="step_time_s" nullable="true" remarks="Time ellapsed since the start of the step, not counting pauses." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="test_time_s" nullable="true" remarks="Time ellapsed since the start of the test, not counting pauses." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="temps_c" nullable="true" remarks="Temperature of each cell in the module." size="131089" type="_numeric" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="module_voltage_mv" nullable="true" remarks="Voltage of the module. Nominally this is the battery voltage." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="cell_voltages_mv" nullable="true" remarks="Voltage of each cell in the module." size="131089" type="_numeric" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="current_ma" nullable="true" remarks="The current sourced (or sunk for discharge) by the cycler at the specific sample time." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="charge_capacity_mah" nullable="true" remarks="The cumulative charge put out by the cycler during charge for the current step." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="discharge_capacity_mah" nullable="true" remarks="The cumulative charge taken in by the cycler during discharge charge for the current step." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="charge_energy_mwh" nullable="true" remarks="The cumulative energy used by the charger during the current step at the sample time." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="discharge_energy_mwh" nullable="true" remarks="The cumulative energy used by the charger during the current step at the sample time." size="0" type="numeric" typeCode="2"/>
+         <primaryKey column="modules_testdata_id" sequenceNumberInPK="1"/>
+         <index name="modules_testdata_pkey" unique="true">
+            <column ascending="true" name="modules_testdata_id"/>
+         </index>
+      </table>
+      <table name="modules_test_data_cycle_stats" remarks="Stores summary statistics for each cycle of a test performed using modules." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('modules_testdata_cyclestats_modules_cyclestats_id_seq'::regclass)" digits="0" id="0" name="modules_cyclestats_id" nullable="false" remarks="Unique identifier for the module cycle stats data point. Auto-incremented upon insertion." size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="module_test_id" nullable="false" remarks="Test data that stats are being calculated from. Refers to the module_test_id in modules_test_meta table." size="10" type="int4" typeCode="4">
+            <parent column="module_test_id" foreignKey="modules_cyclestats_modules_module_test_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="modules_test_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="2" name="datetime" nullable="true" remarks="Date and time (relative to the timezone set on the cycler computer) at the specific sample time." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="unixtime_s" nullable="true" remarks="Date and time converted to unix time (also called 'epoch time') for the specific sample time." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="cycle" nullable="true" remarks="Total number of charge/discharge step pairs the schedule file has completed. Can vary depending on the schedule file." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="test_time_s" nullable="true" remarks="Time elapsed since the start of the test, not counting pauses." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="capacity_charge_mah" nullable="true" remarks="The cumulative charge put out by the cycler during charge for the current step." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="capacity_discharge_mah" nullable="true" remarks="The cumulative charge taken in by the cycler during discharge charge for the current step." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="coulombic_efficiency" nullable="true" remarks="Calculated ratio of discharge capacity to charge capacity for the current step." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="total_cycle_chargetime_s" nullable="true" remarks="Total time spent charging during the current cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="cc_cycle_chargetime_s" nullable="true" remarks="Time (in seconds) spent charging during the constant current portion of the current cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="cv_cycle_chargetime_s" nullable="true" remarks="Time (in seconds) spent charging during the constant voltage portion of the current cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="max_temp_charge_c" nullable="true" remarks="Maximum temperature (in Celsius) of the module during charge for the current cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="max_temp_discharge_c" nullable="true" remarks="Maximum temperature (in Celsius) of the module during discharge for the current cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="cycler_charge_capacity_mah" nullable="true" remarks="The cumulative charge (reported by cycler) put out during charge for the current cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="cycler_discharge_capacity_mah" nullable="true" remarks="The cumulative charge (reported by cycler) taken in during discharge charge for the current cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="cycler_coulombic_efficiency" nullable="true" remarks="The coulombic efficiency (reported by cycler) for the current cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="cycler_charge_time_s" nullable="true" remarks="The total time in seconds (reported by cycler) spent charging during the current cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="cycler_discharge_time_s" nullable="true" remarks="The total time in seconds (reported by cycler) spent discharging during the current cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="cycler_charge_energy_mwh" nullable="true" remarks="The cumulative energy (reported by cycler) used during charge for the current cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="cycler_discharge_energy_mwh" nullable="true" remarks="The cumulative energy (reported by cycler) used during discharge for the current cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="cc_capacity_mah" nullable="true" remarks="The cumulative charge put out by the cycler during the constant current position of charge for the current cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="cv_capacity_mah" nullable="true" remarks="The cumulative charge put out by the cycler during the constant voltage position of charge for the current cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="max_charge_cellvoltage_delta_mv" nullable="true" remarks="The maximum change in voltage of any cell in the module during charge for the current cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="min_charge_cellvoltage_mv" nullable="true" remarks="The minimum voltage of any cell in the module during charge for the current cycle." size="0" type="numeric" typeCode="2"/>
+         <primaryKey column="modules_cyclestats_id" sequenceNumberInPK="1"/>
+         <index name="modules_testdata_cyclestats_pkey" unique="true">
+            <column ascending="true" name="modules_cyclestats_id"/>
+         </index>
+      </table>
+      <table name="modules_test_meta" remarks="Stores high-level information about tests performed using modules." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('modules_testdata_meta_module_test_id_seq'::regclass)" digits="0" id="0" name="module_test_id" nullable="false" remarks="Unique identifier for the module test. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="module_test_id" foreignKey="modules_testdata_modules_module_test_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="modules_test_data"/>
+            <child column="module_test_id" foreignKey="modules_cyclestats_modules_module_test_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="modules_test_data_cycle_stats"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="module_id" nullable="false" remarks="The specific module being tested. References the module_id in the modules table." size="10" type="int4" typeCode="4">
+            <parent column="module_id" foreignKey="modules_testdata_meta_module_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="modules"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="schedule_id" nullable="false" remarks="The schedule file used for the test. References the schedule_id in the schedule_meta table." size="10" type="int4" typeCode="4">
+            <parent column="schedule_id" foreignKey="modules_testdata_meta_schedule_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="schedule_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="test_name" nullable="false" remarks="The name of the specific test used in cycler software. Typically BG_Customer_CellType_TestType_CellLabel_Take#." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="start_date" nullable="true" remarks="The date the test was started." size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="end_date" nullable="true" remarks="The date the test finished." size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="channel" nullable="true" remarks="The cycler channel the test was ran on." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="column_decoder" nullable="true" remarks="The column decoder used for the test." size="2147483647" type="hstore" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="project_id" nullable="true" remarks="The project the test is associated with. References the project_id in the projects table." size="10" type="int4" typeCode="4">
+            <parent column="project_id" foreignKey="modules_testdata_meta_project_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="projects"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="temp_sensor_meta" nullable="true" remarks="The temperature sensor meta data used for the test." size="2147483647" type="_text" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="cycler_id" nullable="true" remarks="The cycler the test was ran on. References the cycler_id in the cyclers table." size="10" type="_int4" typeCode="2003"/>
+         <primaryKey column="module_test_id" sequenceNumberInPK="1"/>
+         <index name="modules_testdata_meta_pkey" unique="true">
+            <column ascending="true" name="module_test_id"/>
+         </index>
+      </table>
+      <table name="pg_stat_statements" numRows="0" remarks="" schema="public" type="VIEW" viewSql=" SELECT pg_stat_statements.userid,&#10;    pg_stat_statements.dbid,&#10;    pg_stat_statements.toplevel,&#10;    pg_stat_statements.queryid,&#10;    pg_stat_statements.query,&#10;    pg_stat_statements.plans,&#10;    pg_stat_statements.total_plan_time,&#10;    pg_stat_statements.min_plan_time,&#10;    pg_stat_statements.max_plan_time,&#10;    pg_stat_statements.mean_plan_time,&#10;    pg_stat_statements.stddev_plan_time,&#10;    pg_stat_statements.calls,&#10;    pg_stat_statements.total_exec_time,&#10;    pg_stat_statements.min_exec_time,&#10;    pg_stat_statements.max_exec_time,&#10;    pg_stat_statements.mean_exec_time,&#10;    pg_stat_statements.stddev_exec_time,&#10;    pg_stat_statements.rows,&#10;    pg_stat_statements.shared_blks_hit,&#10;    pg_stat_statements.shared_blks_read,&#10;    pg_stat_statements.shared_blks_dirtied,&#10;    pg_stat_statements.shared_blks_written,&#10;    pg_stat_statements.local_blks_hit,&#10;    pg_stat_statements.local_blks_read,&#10;    pg_stat_statements.local_blks_dirtied,&#10;    pg_stat_statements.local_blks_written,&#10;    pg_stat_statements.temp_blks_read,&#10;    pg_stat_statements.temp_blks_written,&#10;    pg_stat_statements.blk_read_time,&#10;    pg_stat_statements.blk_write_time,&#10;    pg_stat_statements.temp_blk_read_time,&#10;    pg_stat_statements.temp_blk_write_time,&#10;    pg_stat_statements.wal_records,&#10;    pg_stat_statements.wal_fpi,&#10;    pg_stat_statements.wal_bytes,&#10;    pg_stat_statements.jit_functions,&#10;    pg_stat_statements.jit_generation_time,&#10;    pg_stat_statements.jit_inlining_count,&#10;    pg_stat_statements.jit_inlining_time,&#10;    pg_stat_statements.jit_optimization_count,&#10;    pg_stat_statements.jit_optimization_time,&#10;    pg_stat_statements.jit_emission_count,&#10;    pg_stat_statements.jit_emission_time&#10;   FROM pg_stat_statements(true) pg_stat_statements(userid, dbid, toplevel, queryid, query, plans, total_plan_time, min_plan_time, max_plan_time, mean_plan_time, stddev_plan_time, calls, total_exec_time, min_exec_time, max_exec_time, mean_exec_time, stddev_exec_time, rows, shared_blks_hit, shared_blks_read, shared_blks_dirtied, shared_blks_written, local_blks_hit, local_blks_read, local_blks_dirtied, local_blks_written, temp_blks_read, temp_blks_written, blk_read_time, blk_write_time, temp_blk_read_time, temp_blk_write_time, wal_records, wal_fpi, wal_bytes, jit_functions, jit_generation_time, jit_inlining_count, jit_inlining_time, jit_optimization_count, jit_optimization_time, jit_emission_count, jit_emission_time);">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="userid" nullable="true" remarks="" size="10" type="oid" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="dbid" nullable="true" remarks="" size="10" type="oid" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="toplevel" nullable="true" remarks="" size="1" type="bool" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="queryid" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="query" nullable="true" remarks="" size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="plans" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="6" name="total_plan_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="7" name="min_plan_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="8" name="max_plan_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="9" name="mean_plan_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="10" name="stddev_plan_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="calls" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="12" name="total_exec_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="13" name="min_exec_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="14" name="max_exec_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="15" name="mean_exec_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="16" name="stddev_exec_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="rows" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="shared_blks_hit" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="shared_blks_read" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="shared_blks_dirtied" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="shared_blks_written" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="local_blks_hit" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="local_blks_read" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="local_blks_dirtied" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="25" name="local_blks_written" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="26" name="temp_blks_read" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="27" name="temp_blks_written" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="28" name="blk_read_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="29" name="blk_write_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="30" name="temp_blk_read_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="31" name="temp_blk_write_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="32" name="wal_records" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="33" name="wal_fpi" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="34" name="wal_bytes" nullable="true" remarks="" size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="35" name="jit_functions" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="36" name="jit_generation_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="37" name="jit_inlining_count" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="38" name="jit_inlining_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="39" name="jit_optimization_count" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="40" name="jit_optimization_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="41" name="jit_emission_count" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="17" id="42" name="jit_emission_time" nullable="true" remarks="" size="17" type="float8" typeCode="8"/>
+      </table>
+      <table name="pg_stat_statements_info" numRows="0" remarks="" schema="public" type="VIEW" viewSql=" SELECT pg_stat_statements_info.dealloc,&#10;    pg_stat_statements_info.stats_reset&#10;   FROM pg_stat_statements_info() pg_stat_statements_info(dealloc, stats_reset);">
+         <column autoUpdated="false" defaultValue="null" digits="0" id="0" name="dealloc" nullable="true" remarks="" size="19" type="int8" typeCode="-5"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="1" name="stats_reset" nullable="true" remarks="" size="35" type="timestamptz" typeCode="93"/>
+      </table>
+      <table name="potentiostats" remarks="Stores information about potentiostat instance." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('potentiostats_potentiostat_id_seq'::regclass)" digits="0" id="0" name="potentiostat_id" nullable="false" remarks="Unique identifier for the potentiostat instance. Auto-incremented upon insertion." size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="potentiostattype_id" nullable="true" remarks="Refers to the make of the potentiostat defined in potentiostats_meta table." size="10" type="int4" typeCode="4">
+            <parent column="potentiostats_type_id" foreignKey="potentiostats_to_potentiostats_meta_fk" implied="false" onDeleteCascade="false" schema="public" table="potentiostats_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="sn" nullable="true" remarks="The serial number of the potentiostat." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="calibration_date" nullable="true" remarks="The date the potentiostat was last calibrated." size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="calibration_due_date" nullable="true" remarks="The date the potentiostat is due to be calibrated." size="13" type="date" typeCode="91"/>
+         <primaryKey column="potentiostat_id" sequenceNumberInPK="1"/>
+         <index name="potentiostats_pkey" unique="true">
+            <column ascending="true" name="potentiostat_id"/>
+         </index>
+      </table>
+      <table name="potentiostats_meta" remarks="Stores information about type of potentiostat." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('potentiostats_meta_potentiostattype_id_seq'::regclass)" digits="0" id="0" name="potentiostats_type_id" nullable="false" remarks="Unique identifier for potentiostat type. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="potentiostattype_id" foreignKey="potentiostats_to_potentiostats_meta_fk" implied="false" onDeleteCascade="false" schema="public" table="potentiostats"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="manufacturer" nullable="true" remarks="The manufacturer of the potentiostat." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="model" nullable="true" remarks="The model of the potentiostat." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="datasheet" nullable="true" remarks="Datasheet for the potentiostat." size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="potentiostats_type_id" sequenceNumberInPK="1"/>
+         <index name="potentiostats_meta_pkey" unique="true">
+            <column ascending="true" name="potentiostats_type_id"/>
+         </index>
+      </table>
+      <table name="profiles_meta" remarks="Stores information about charge profiles used in schedules." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('profiles_meta_profile_id_seq'::regclass)" digits="0" id="0" name="profile_id" nullable="false" remarks="Unique identifier for the profile. Auto-incremented upon insertion." size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="cell_type_id" nullable="false" remarks="The type of battery the profile is for. References the cell_type_id in the cells_meta table." size="10" type="int4" typeCode="4">
+            <parent column="cell_type_id" foreignKey="profiles_meta_batterytype_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="cells_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="author" nullable="true" remarks="The person who created the profile." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="date_created" nullable="true" remarks="The date the profile was created." size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="profile_name" nullable="true" remarks="The name of the profile." size="2147483647" type="text" typeCode="12"/>
+         <primaryKey column="profile_id" sequenceNumberInPK="1"/>
+         <index name="profiles_meta_pkey" unique="true">
+            <column ascending="true" name="profile_id"/>
+         </index>
+      </table>
+      <table name="projects" remarks="Tracks projects associated with a customer." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('projects_project_id_seq'::regclass)" digits="0" id="0" name="project_id" nullable="false" remarks="Unique identifier for the project. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="project_id" foreignKey="modules_testdata_meta_project_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="modules_test_meta"/>
+            <child column="project_id" foreignKey="arbin_schedules_project_id_fk" implied="false" onDeleteCascade="false" schema="public" table="test_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="project_name" nullable="true" remarks="The name of the project." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="customer_id" nullable="true" remarks="The customer the project is associated with. References the customer_id in the customers table." size="10" type="int4" typeCode="4">
+            <parent column="customer_id" foreignKey="projects_customer_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="customers"/>
+         </column>
+         <primaryKey column="project_id" sequenceNumberInPK="1"/>
+         <index name="projects_pkey" unique="true">
+            <column ascending="true" name="project_id"/>
+         </index>
+      </table>
+      <table name="schedule_meta" remarks="Stores high-level information about schedule files." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('schedules_meta_schedule_id_seq'::regclass)" digits="0" id="0" name="schedule_id" nullable="false" remarks="Unique identifier for the schedule file. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="schedule_id" foreignKey="audit_validation_meta_schedule_id_fkey" implied="false" onDeleteCascade="false" schema="audit" table="validation_meta"/>
+            <child column="schedule_id" foreignKey="modules_testdata_meta_schedule_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="modules_test_meta"/>
+            <child column="schedule_id" foreignKey="testdata_meta_schedule_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="test_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="schedule_name" nullable="true" remarks="The name of the schedule file used in cycler software." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="test_type" nullable="true" remarks="The type of test performed, e.g. ICT, Characterization, Baseline, Profile Testing." size="2147483647" type="enum_test_type" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="cycler_make" nullable="true" remarks="The make of the cycler schedule is written for, e.g. Arbin or Maccor." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="date_created" nullable="true" remarks="Date schedule file was created. Not necessarily the date the test was ran." size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="created_by" nullable="true" remarks="The person who created the schedule file." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="comments" nullable="true" remarks="Any comments regarding the schedule file." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="cv_voltage_threshold_mv" nullable="true" remarks="The voltage threshold (in mV) used to determine when to switch from constant current to constant voltage during charge." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="details" nullable="true" remarks="Other details about the schedule file." size="2147483647" type="jsonb" typeCode="1111"/>
+         <primaryKey column="schedule_id" sequenceNumberInPK="1"/>
+         <index name="schedule_id" unique="true">
+            <column ascending="true" name="schedule_id"/>
+         </index>
+         <index name="schedules_meta_file_name_key" unique="true">
+            <column ascending="true" name="schedule_name"/>
+         </index>
+      </table>
+      <table name="sil_data" remarks="Stores model outputs and test data from software-in-the-loop testing." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('sil_data_sil_data_id_seq'::regclass)" digits="0" id="0" name="sil_data_id" nullable="false" remarks="Unique identifier for the SIL data point. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <parent column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="cycler_rt_channel_statuses"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="sil_id" nullable="true" remarks="Refers to the SIL test defined in sil_meta table." size="10" type="int4" typeCode="4">
+            <parent column="sil_id" foreignKey="sil_data_sil_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="sil_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="test_data_id" nullable="true" remarks="Refers to the test data defined in test_data table." size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="cycler_rt_channel_statuses"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="cycle" nullable="true" remarks="The cycle number of the data point. Tracks number of charge/discharge cycles." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="test_time_s" nullable="true" remarks="The time in seconds since the start of the test, ignoring pauses." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="measured_voltage_mv" nullable="true" remarks="The voltage measured by the cycler during the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="modeled_voltage_mv" nullable="true" remarks="The voltage predicted by the model during the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="voltage_delta_mv" nullable="true" remarks="The difference between the measured and modeled voltage during the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="measured_current_ma" nullable="true" remarks="The current measured by the cycler during the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="overpotential_mv" nullable="true" remarks="The overpotential of the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="solution_time_ms" nullable="true" remarks="The solution time of the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="11" name="insert_time" nullable="false" remarks="Timestamp of insertion into the database." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="modeled_current_ma" nullable="true" remarks="The current predicted by the model during the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="model_states" nullable="true" remarks="The model states during the data point." size="131089" type="_numeric" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="other_details" nullable="true" remarks="Other details about the SIL data point." size="2147483647" type="jsonb" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="15" name="recorded_datetime" nullable="true" remarks="The date and time the data point was recorded." size="35" type="timestamptz" typeCode="93"/>
+         <index name="sil_data_insert_time_idx" unique="false">
+            <column ascending="false" name="insert_time"/>
+         </index>
+      </table>
+      <table name="sil_data_summary_10min" numRows="0" remarks="Materialized view of sil_data table aggregated by 10 minute intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_15.tenmin,&#10;    _materialized_hypertable_15.sil_id,&#10;    _materialized_hypertable_15.tenmin_measured_voltage_mv,&#10;    _materialized_hypertable_15.tenmin_modeled_voltage_mv,&#10;    _materialized_hypertable_15.tenmin_overpotential_mv,&#10;    _materialized_hypertable_15.tenmin_solution_time_ms,&#10;    _materialized_hypertable_15.tenmin_voltage_delta_mv,&#10;    _materialized_hypertable_15.tenmin_modeled_current_ma,&#10;    _materialized_hypertable_15.tenmin_measured_current_ma&#10;   FROM _timescaledb_internal._materialized_hypertable_15&#10;  WHERE (_materialized_hypertable_15.tenmin &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(15)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('00:10:00'::interval, sil_data.insert_time) AS tenmin,&#10;    sil_data.sil_id,&#10;    avg(sil_data.measured_voltage_mv) AS tenmin_measured_voltage_mv,&#10;    avg(sil_data.modeled_voltage_mv) AS tenmin_modeled_voltage_mv,&#10;    avg(sil_data.overpotential_mv) AS tenmin_overpotential_mv,&#10;    avg(sil_data.solution_time_ms) AS tenmin_solution_time_ms,&#10;    avg(sil_data.voltage_delta_mv) AS tenmin_voltage_delta_mv,&#10;    avg(sil_data.modeled_current_ma) AS tenmin_modeled_current_ma,&#10;    avg(sil_data.measured_current_ma) AS tenmin_measured_current_ma&#10;   FROM sil_data&#10;  WHERE (sil_data.insert_time &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(15)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('00:10:00'::interval, sil_data.insert_time)), sil_data.sil_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="tenmin" nullable="true" remarks="The datetime rounded to the nearest 10 minute interval." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="sil_id" nullable="true" remarks="Refers to the SIL test defined in sil_meta table." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="tenmin_measured_voltage_mv" nullable="true" remarks="The average measured voltage of the SIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="tenmin_modeled_voltage_mv" nullable="true" remarks="The average modeled voltage of the SIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="tenmin_overpotential_mv" nullable="true" remarks="The average overpotential of the SIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="tenmin_solution_time_ms" nullable="true" remarks="The average solution time of the SIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="tenmin_voltage_delta_mv" nullable="true" remarks="The average voltage delta of the SIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="tenmin_modeled_current_ma" nullable="true" remarks="The average modeled current of the SIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="tenmin_measured_current_ma" nullable="true" remarks="The average measured current of the SIL test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="sil_data_summary_30s" numRows="0" remarks="Materialized view of sil_data table aggregated by 30 second intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_46.thirtysec,&#10;    _materialized_hypertable_46.sil_id,&#10;    _materialized_hypertable_46.thirtysec_measured_voltage_mv,&#10;    _materialized_hypertable_46.thirtysec_modeled_voltage_mv,&#10;    _materialized_hypertable_46.thirtysec_overpotential_mv,&#10;    _materialized_hypertable_46.thirtysec_solution_time_ms,&#10;    _materialized_hypertable_46.thirtysec_voltage_delta_mv,&#10;    _materialized_hypertable_46.thirtysec_modeled_current_ma,&#10;    _materialized_hypertable_46.thirtysec_measured_current_ma&#10;   FROM _timescaledb_internal._materialized_hypertable_46&#10;  WHERE (_materialized_hypertable_46.thirtysec &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(46)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('00:00:30'::interval, sil_data.insert_time) AS thirtysec,&#10;    sil_data.sil_id,&#10;    avg(sil_data.measured_voltage_mv) AS thirtysec_measured_voltage_mv,&#10;    avg(sil_data.modeled_voltage_mv) AS thirtysec_modeled_voltage_mv,&#10;    avg(sil_data.overpotential_mv) AS thirtysec_overpotential_mv,&#10;    avg(sil_data.solution_time_ms) AS thirtysec_solution_time_ms,&#10;    avg(sil_data.voltage_delta_mv) AS thirtysec_voltage_delta_mv,&#10;    avg(sil_data.modeled_current_ma) AS thirtysec_modeled_current_ma,&#10;    avg(sil_data.measured_current_ma) AS thirtysec_measured_current_ma&#10;   FROM sil_data&#10;  WHERE (sil_data.insert_time &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(46)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('00:00:30'::interval, sil_data.insert_time)), sil_data.sil_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="thirtysec" nullable="true" remarks="The datetime rounded to the nearest 30 second interval." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="sil_id" nullable="true" remarks="Refers to the SIL test defined in sil_meta table." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="thirtysec_measured_voltage_mv" nullable="true" remarks="The average measured voltage of the SIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="thirtysec_modeled_voltage_mv" nullable="true" remarks="The average modeled voltage of the SIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="thirtysec_overpotential_mv" nullable="true" remarks="The average overpotential of the SIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="thirtysec_solution_time_ms" nullable="true" remarks="The average solution time of the SIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="thirtysec_voltage_delta_mv" nullable="true" remarks="The average voltage delta of the SIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="thirtysec_modeled_current_ma" nullable="true" remarks="The average modeled current of the SIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="thirtysec_measured_current_ma" nullable="true" remarks="The average measured current of the SIL test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="sil_data_summary_daily" numRows="0" remarks="Materialized view of sil_data table aggregated by daily intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_18.day,&#10;    _materialized_hypertable_18.sil_id,&#10;    _materialized_hypertable_18.day_measured_voltage_mv,&#10;    _materialized_hypertable_18.day_modeled_voltage_mv,&#10;    _materialized_hypertable_18.day_overpotential_mv,&#10;    _materialized_hypertable_18.day_solution_time_ms,&#10;    _materialized_hypertable_18.day_voltage_delta_mv,&#10;    _materialized_hypertable_18.day_modeled_current_ma,&#10;    _materialized_hypertable_18.day_measured_current_ma&#10;   FROM _timescaledb_internal._materialized_hypertable_18&#10;  WHERE (_materialized_hypertable_18.day &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(18)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('1 day'::interval, sil_data.insert_time) AS day,&#10;    sil_data.sil_id,&#10;    avg(sil_data.measured_voltage_mv) AS day_measured_voltage_mv,&#10;    avg(sil_data.modeled_voltage_mv) AS day_modeled_voltage_mv,&#10;    avg(sil_data.overpotential_mv) AS day_overpotential_mv,&#10;    avg(sil_data.solution_time_ms) AS day_solution_time_ms,&#10;    avg(sil_data.voltage_delta_mv) AS day_voltage_delta_mv,&#10;    avg(sil_data.modeled_current_ma) AS day_modeled_current_ma,&#10;    avg(sil_data.measured_current_ma) AS day_measured_current_ma&#10;   FROM sil_data&#10;  WHERE (sil_data.insert_time &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(18)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('1 day'::interval, sil_data.insert_time)), sil_data.sil_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="day" nullable="true" remarks="The datetime rounded to the nearest day." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="sil_id" nullable="true" remarks="Refers to the SIL test defined in sil_meta table." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="day_measured_voltage_mv" nullable="true" remarks="The average measured voltage of the SIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="day_modeled_voltage_mv" nullable="true" remarks="The average modeled voltage of the SIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="day_overpotential_mv" nullable="true" remarks="The average overpotential of the SIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="day_solution_time_ms" nullable="true" remarks="The average solution time of the SIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="day_voltage_delta_mv" nullable="true" remarks="The average voltage delta of the SIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="day_modeled_current_ma" nullable="true" remarks="The average modeled current of the SIL test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="day_measured_current_ma" nullable="true" remarks="The average measured current of the SIL test for the day." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="sil_data_summary_hourly" numRows="0" remarks="Materialized view of sil_data table aggregated by hourly intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_17.hour,&#10;    _materialized_hypertable_17.sil_id,&#10;    _materialized_hypertable_17.hour_measured_voltage_mv,&#10;    _materialized_hypertable_17.hour_modeled_voltage_mv,&#10;    _materialized_hypertable_17.hour_overpotential_mv,&#10;    _materialized_hypertable_17.hour_solution_time_ms,&#10;    _materialized_hypertable_17.hour_voltage_delta_mv,&#10;    _materialized_hypertable_17.hour_modeled_current_ma,&#10;    _materialized_hypertable_17.hour_measured_current_ma&#10;   FROM _timescaledb_internal._materialized_hypertable_17&#10;  WHERE (_materialized_hypertable_17.hour &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(17)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('01:00:00'::interval, sil_data.insert_time) AS hour,&#10;    sil_data.sil_id,&#10;    avg(sil_data.measured_voltage_mv) AS hour_measured_voltage_mv,&#10;    avg(sil_data.modeled_voltage_mv) AS hour_modeled_voltage_mv,&#10;    avg(sil_data.overpotential_mv) AS hour_overpotential_mv,&#10;    avg(sil_data.solution_time_ms) AS hour_solution_time_ms,&#10;    avg(sil_data.voltage_delta_mv) AS hour_voltage_delta_mv,&#10;    avg(sil_data.modeled_current_ma) AS hour_modeled_current_ma,&#10;    avg(sil_data.measured_current_ma) AS hour_measured_current_ma&#10;   FROM sil_data&#10;  WHERE (sil_data.insert_time &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(17)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('01:00:00'::interval, sil_data.insert_time)), sil_data.sil_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="hour" nullable="true" remarks="The datetime rounded to the nearest hour." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="sil_id" nullable="true" remarks="Refers to the SIL test defined in sil_meta table." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="hour_measured_voltage_mv" nullable="true" remarks="The average measured voltage of the SIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="hour_modeled_voltage_mv" nullable="true" remarks="The average modeled voltage of the SIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="hour_overpotential_mv" nullable="true" remarks="The average overpotential of the SIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="hour_solution_time_ms" nullable="true" remarks="The average solution time of the SIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="hour_voltage_delta_mv" nullable="true" remarks="The average voltage delta of the SIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="hour_modeled_current_ma" nullable="true" remarks="The average modeled current of the SIL test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="hour_measured_current_ma" nullable="true" remarks="The average measured current of the SIL test for the hour." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="sil_meta" remarks="Stores high-level information about software-in-the-loop tests." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('sil_meta_sil_id_seq'::regclass)" digits="0" id="0" name="sil_id" nullable="false" remarks="Unique identifier for the SIL test. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="sil_id" foreignKey="sil_data_sil_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="sil_data"/>
+         </column>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="1" name="launched_at" nullable="false" remarks="The date and time the SIL test was launched." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="user_id" nullable="false" remarks="The user who launched the SIL test." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="status" nullable="true" remarks="The status of the SIL test. Can be idle, rest, charge, discharge, problem, or other." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="cell_type_id" nullable="true" remarks="The cell used in the SIL test. References the cell_type_id in the cells_meta table." size="10" type="int4" typeCode="4">
+            <parent column="cell_type_id" foreignKey="sil_meta_batterytype_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="cells_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="test_id" nullable="true" remarks="The test the SIL test is associated with. References the test_id in the test_meta table." size="10" type="int4" typeCode="4">
+            <parent column="test_id" foreignKey="sil_meta_test_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="test_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="configs" nullable="true" remarks="The configuration files used in the test." size="2147483647" type="jsonb" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="other_details" nullable="true" remarks="Other details about the SIL test." size="2147483647" type="jsonb" typeCode="1111"/>
+         <primaryKey column="sil_id" sequenceNumberInPK="1"/>
+         <index name="sil_meta_pkey" unique="true">
+            <column ascending="true" name="sil_id"/>
+         </index>
+      </table>
+      <table name="sim_data" remarks="Stores model outputs and test data from simulation testing." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('sim_data_sim_data_id_seq'::regclass)" digits="0" id="0" name="sim_data_id" nullable="false" remarks="Unique identifier for the simulation data point. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <parent column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="cycler_rt_channel_statuses"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="sim_id" nullable="true" remarks="Refers to the simulation test defined in sim_meta table." size="10" type="int4" typeCode="4">
+            <parent column="sim_id" foreignKey="sim_data_sim_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="sim_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="test_data_id" nullable="true" remarks="Refers to the test data defined in test_data table." size="10" type="int4" typeCode="4">
+            <parent column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="cycler_rt_channel_statuses"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="cycle" nullable="true" remarks="The cycle number of the data point. Tracks number of charge/discharge cycles." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="test_time_s" nullable="true" remarks="The time in seconds since the start of the test, ignoring pauses." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="measured_voltage_mv" nullable="true" remarks="The voltage measured by the cycler during the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="modeled_voltage_mv" nullable="true" remarks="The voltage predicted by the model during the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="voltage_delta_mv" nullable="true" remarks="The difference between the measured and modeled voltage during the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="measured_current_ma" nullable="true" remarks="The current measured by the cycler during the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="overpotential_mv" nullable="true" remarks="The overpotential of the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="solution_time_ms" nullable="true" remarks="The solution time of the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="11" name="insert_time" nullable="false" remarks="Timestamp of insertion into the database." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="modeled_current_ma" nullable="true" remarks="The current predicted by the model during the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="model_states" nullable="true" remarks="The model states during the data point." size="131089" type="_numeric" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="other_details" nullable="true" remarks="Other details about the simulation data point." size="2147483647" type="jsonb" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="15" name="recorded_datetime" nullable="true" remarks="The date and time the data point was recorded." size="35" type="timestamptz" typeCode="93"/>
+         <index name="sim_data_insert_time_idx" unique="false">
+            <column ascending="false" name="insert_time"/>
+         </index>
+      </table>
+      <table name="sim_data_summary_10min" numRows="0" remarks="Materialized view of sim_data table aggregated by 10 minute intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_41.tenmin,&#10;    _materialized_hypertable_41.sim_id,&#10;    _materialized_hypertable_41.tenmin_measured_voltage_mv,&#10;    _materialized_hypertable_41.tenmin_modeled_voltage_mv,&#10;    _materialized_hypertable_41.tenmin_overpotential_mv,&#10;    _materialized_hypertable_41.tenmin_solution_time_ms,&#10;    _materialized_hypertable_41.tenmin_voltage_delta_mv,&#10;    _materialized_hypertable_41.tenmin_modeled_current_ma,&#10;    _materialized_hypertable_41.tenmin_measured_current_ma&#10;   FROM _timescaledb_internal._materialized_hypertable_41&#10;  WHERE (_materialized_hypertable_41.tenmin &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(41)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('00:10:00'::interval, sim_data.insert_time) AS tenmin,&#10;    sim_data.sim_id,&#10;    avg(sim_data.measured_voltage_mv) AS tenmin_measured_voltage_mv,&#10;    avg(sim_data.modeled_voltage_mv) AS tenmin_modeled_voltage_mv,&#10;    avg(sim_data.overpotential_mv) AS tenmin_overpotential_mv,&#10;    avg(sim_data.solution_time_ms) AS tenmin_solution_time_ms,&#10;    avg(sim_data.voltage_delta_mv) AS tenmin_voltage_delta_mv,&#10;    avg(sim_data.modeled_current_ma) AS tenmin_modeled_current_ma,&#10;    avg(sim_data.measured_current_ma) AS tenmin_measured_current_ma&#10;   FROM sim_data&#10;  WHERE (sim_data.insert_time &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(41)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('00:10:00'::interval, sim_data.insert_time)), sim_data.sim_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="tenmin" nullable="true" remarks="The datetime rounded to the nearest 10 minute interval." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="sim_id" nullable="true" remarks="Refers to the simulation test defined in sim_meta table." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="tenmin_measured_voltage_mv" nullable="true" remarks="The average measured voltage of the simulation test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="tenmin_modeled_voltage_mv" nullable="true" remarks="The average modeled voltage of the simulation test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="tenmin_overpotential_mv" nullable="true" remarks="The average overpotential of the simulation test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="tenmin_solution_time_ms" nullable="true" remarks="The average solution time of the simulation test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="tenmin_voltage_delta_mv" nullable="true" remarks="The average voltage delta of the simulation test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="tenmin_modeled_current_ma" nullable="true" remarks="The average modeled current of the simulation test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="tenmin_measured_current_ma" nullable="true" remarks="The average measured current of the simulation test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="sim_data_summary_30s" numRows="0" remarks="Materialized view of sim_data table aggregated by 30 second intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_47.thirtysec,&#10;    _materialized_hypertable_47.sim_id,&#10;    _materialized_hypertable_47.thirtysec_measured_voltage_mv,&#10;    _materialized_hypertable_47.thirtysec_modeled_voltage_mv,&#10;    _materialized_hypertable_47.thirtysec_overpotential_mv,&#10;    _materialized_hypertable_47.thirtysec_solution_time_ms,&#10;    _materialized_hypertable_47.thirtysec_voltage_delta_mv,&#10;    _materialized_hypertable_47.thirtysec_modeled_current_ma,&#10;    _materialized_hypertable_47.thirtysec_measured_current_ma&#10;   FROM _timescaledb_internal._materialized_hypertable_47&#10;  WHERE (_materialized_hypertable_47.thirtysec &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(47)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('00:00:30'::interval, sim_data.insert_time) AS thirtysec,&#10;    sim_data.sim_id,&#10;    avg(sim_data.measured_voltage_mv) AS thirtysec_measured_voltage_mv,&#10;    avg(sim_data.modeled_voltage_mv) AS thirtysec_modeled_voltage_mv,&#10;    avg(sim_data.overpotential_mv) AS thirtysec_overpotential_mv,&#10;    avg(sim_data.solution_time_ms) AS thirtysec_solution_time_ms,&#10;    avg(sim_data.voltage_delta_mv) AS thirtysec_voltage_delta_mv,&#10;    avg(sim_data.modeled_current_ma) AS thirtysec_modeled_current_ma,&#10;    avg(sim_data.measured_current_ma) AS thirtysec_measured_current_ma&#10;   FROM sim_data&#10;  WHERE (sim_data.insert_time &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(47)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('00:00:30'::interval, sim_data.insert_time)), sim_data.sim_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="thirtysec" nullable="true" remarks="The datetime rounded to the nearest 30 second interval." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="sim_id" nullable="true" remarks="Refers to the simulation test defined in sim_meta table." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="thirtysec_measured_voltage_mv" nullable="true" remarks="The average measured voltage of the simulation test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="thirtysec_modeled_voltage_mv" nullable="true" remarks="The average modeled voltage of the simulation test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="thirtysec_overpotential_mv" nullable="true" remarks="The average overpotential of the simulation test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="thirtysec_solution_time_ms" nullable="true" remarks="The average solution time of the simulation test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="thirtysec_voltage_delta_mv" nullable="true" remarks="The average voltage delta of the simulation test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="thirtysec_modeled_current_ma" nullable="true" remarks="The average modeled current of the simulation test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="thirtysec_measured_current_ma" nullable="true" remarks="The average measured current of the simulation test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="sim_data_summary_daily" numRows="0" remarks="Materialized view of sim_data table aggregated by daily intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_44.day,&#10;    _materialized_hypertable_44.sim_id,&#10;    _materialized_hypertable_44.day_measured_voltage_mv,&#10;    _materialized_hypertable_44.day_modeled_voltage_mv,&#10;    _materialized_hypertable_44.day_overpotential_mv,&#10;    _materialized_hypertable_44.day_solution_time_ms,&#10;    _materialized_hypertable_44.day_voltage_delta_mv,&#10;    _materialized_hypertable_44.day_modeled_current_ma,&#10;    _materialized_hypertable_44.day_measured_current_ma&#10;   FROM _timescaledb_internal._materialized_hypertable_44&#10;  WHERE (_materialized_hypertable_44.day &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(44)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('1 day'::interval, sim_data.insert_time) AS day,&#10;    sim_data.sim_id,&#10;    avg(sim_data.measured_voltage_mv) AS day_measured_voltage_mv,&#10;    avg(sim_data.modeled_voltage_mv) AS day_modeled_voltage_mv,&#10;    avg(sim_data.overpotential_mv) AS day_overpotential_mv,&#10;    avg(sim_data.solution_time_ms) AS day_solution_time_ms,&#10;    avg(sim_data.voltage_delta_mv) AS day_voltage_delta_mv,&#10;    avg(sim_data.modeled_current_ma) AS day_modeled_current_ma,&#10;    avg(sim_data.measured_current_ma) AS day_measured_current_ma&#10;   FROM sim_data&#10;  WHERE (sim_data.insert_time &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(44)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('1 day'::interval, sim_data.insert_time)), sim_data.sim_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="day" nullable="true" remarks="The datetime rounded to the nearest day." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="sim_id" nullable="true" remarks="Refers to the simulation test defined in sim_meta table." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="day_measured_voltage_mv" nullable="true" remarks="The average measured voltage of the simulation test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="day_modeled_voltage_mv" nullable="true" remarks="The average modeled voltage of the simulation test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="day_overpotential_mv" nullable="true" remarks="The average overpotential of the simulation test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="day_solution_time_ms" nullable="true" remarks="The average solution time of the simulation test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="day_voltage_delta_mv" nullable="true" remarks="The average voltage delta of the simulation test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="day_modeled_current_ma" nullable="true" remarks="The average modeled current of the simulation test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="day_measured_current_ma" nullable="true" remarks="The average measured current of the simulation test for the day." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="sim_data_summary_hourly" numRows="0" remarks="Materialized view of sim_data table aggregated by hourly intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_43.hour,&#10;    _materialized_hypertable_43.sim_id,&#10;    _materialized_hypertable_43.hour_measured_voltage_mv,&#10;    _materialized_hypertable_43.hour_modeled_voltage_mv,&#10;    _materialized_hypertable_43.hour_overpotential_mv,&#10;    _materialized_hypertable_43.hour_solution_time_ms,&#10;    _materialized_hypertable_43.hour_voltage_delta_mv,&#10;    _materialized_hypertable_43.hour_modeled_current_ma,&#10;    _materialized_hypertable_43.hour_measured_current_ma&#10;   FROM _timescaledb_internal._materialized_hypertable_43&#10;  WHERE (_materialized_hypertable_43.hour &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(43)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('01:00:00'::interval, sim_data.insert_time) AS hour,&#10;    sim_data.sim_id,&#10;    avg(sim_data.measured_voltage_mv) AS hour_measured_voltage_mv,&#10;    avg(sim_data.modeled_voltage_mv) AS hour_modeled_voltage_mv,&#10;    avg(sim_data.overpotential_mv) AS hour_overpotential_mv,&#10;    avg(sim_data.solution_time_ms) AS hour_solution_time_ms,&#10;    avg(sim_data.voltage_delta_mv) AS hour_voltage_delta_mv,&#10;    avg(sim_data.modeled_current_ma) AS hour_modeled_current_ma,&#10;    avg(sim_data.measured_current_ma) AS hour_measured_current_ma&#10;   FROM sim_data&#10;  WHERE (sim_data.insert_time &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(43)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('01:00:00'::interval, sim_data.insert_time)), sim_data.sim_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="hour" nullable="true" remarks="The datetime rounded to the nearest hour." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="sim_id" nullable="true" remarks="Refers to the simulation test defined in sim_meta table." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="hour_measured_voltage_mv" nullable="true" remarks="The average measured voltage of the simulation test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="hour_modeled_voltage_mv" nullable="true" remarks="The average modeled voltage of the simulation test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="hour_overpotential_mv" nullable="true" remarks="The average overpotential of the simulation test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="hour_solution_time_ms" nullable="true" remarks="The average solution time of the simulation test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="hour_voltage_delta_mv" nullable="true" remarks="The average voltage delta of the simulation test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="hour_modeled_current_ma" nullable="true" remarks="The average modeled current of the simulation test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="hour_measured_current_ma" nullable="true" remarks="The average measured current of the simulation test for the hour." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="sim_meta" remarks="Stores high-level information about simulation tests." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('sim_meta_sim_id_seq'::regclass)" digits="0" id="0" name="sim_id" nullable="false" remarks="Unique identifier for the simulation test. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="sim_id" foreignKey="sim_data_sim_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="sim_data"/>
+         </column>
+         <column autoUpdated="false" defaultValue="now()" digits="6" id="1" name="launched_at" nullable="false" remarks="The date and time the simulation test was launched." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="user_id" nullable="false" remarks="The user who launched the simulation test." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="status" nullable="true" remarks="The status of the simulation test. Can be idle, rest, charge, discharge, problem, or other." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="cell_type_id" nullable="true" remarks="The cell used in the simulation test. References the cell_type_id in the cells_meta table." size="10" type="int4" typeCode="4">
+            <parent column="cell_type_id" foreignKey="sim_meta_cell_type_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="cells_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="test_id" nullable="true" remarks="The test the simulation test is associated with. References the test_id in the test_meta table." size="10" type="int4" typeCode="4">
+            <parent column="test_id" foreignKey="sim_meta_test_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="test_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="configs" nullable="true" remarks="The configuration files used in the test." size="2147483647" type="jsonb" typeCode="1111"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="other_details" nullable="true" remarks="Other details about the simulation test." size="2147483647" type="jsonb" typeCode="1111"/>
+         <primaryKey column="sim_id" sequenceNumberInPK="1"/>
+         <index name="sim_meta_pkey" unique="true">
+            <column ascending="true" name="sim_id"/>
+         </index>
+      </table>
+      <table name="test_data" remarks="Stores test data for tests performed on single cells." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('testdata_test_data_id_seq'::regclass)" digits="0" id="0" name="test_data_id" nullable="false" remarks="Unique identifier for the test data point. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <parent column="id" foreignKey="Implied Constraint" implied="true" onDeleteCascade="false" schema="public" table="cycler_rt_channel_statuses"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="test_id" nullable="false" remarks="The specific test the data point is associated with. References the test_id in the test_meta table." size="5" type="int2" typeCode="5">
+            <parent column="test_id" foreignKey="testdata_test_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="test_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="cycle" nullable="true" remarks="The cycle number of the data point. Tracks number of charge/discharge cycles." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="step" nullable="true" remarks="Schedule step associated with the data point." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="test_time_s" nullable="true" remarks="The time in seconds since the start of the test, ignoring pauses." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="step_time_s" nullable="true" remarks="The time in seconds since the start of the step, ignoring pauses." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="current_ma" nullable="false" remarks="The current sourced (or sunk) by the cycler at the specific sample time. Positive for charge, negative for discharge." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="voltage_mv" nullable="false" remarks="The voltage measured by the cycler at the specific sample time." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="6" id="8" name="recorded_datetime" nullable="false" remarks="The date and time the data point was recorded by cycler. Matches timezone of cycler." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="unixtime_s" nullable="false" remarks="The time in seconds since the Unix epoch (January 1, 1970). Calculated from recorded_datetime." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="thermocouple_temps_c" nullable="true" remarks="The temperature (in Celsius) of each thermocouple. Usually T1 is chamber temperature and T2 is cell temperature." size="131089" type="_numeric" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="other_details" nullable="true" remarks="Contains data for auxillary measurements." size="2147483647" type="jsonb" typeCode="1111"/>
+         <index name="test_data_recorded_datetime_idx" unique="false">
+            <column ascending="false" name="recorded_datetime"/>
+         </index>
+         <index name="testdata_test_id_idx" unique="false">
+            <column ascending="true" name="test_id"/>
+         </index>
+      </table>
+      <table name="test_data_cycle_stats" remarks="Stores summary statistics for each cycle for tests performed on single cells." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('testdata_cyclestats_cyclestats_id_seq'::regclass)" digits="0" id="0" name="cycle_stats_id" nullable="false" remarks="Unique identifier for the test data cycle stats. Auto-incremented upon insertion." size="10" type="serial" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="test_id" nullable="false" remarks="The specific test the data point is associated with. References the test_id in the test_meta table." size="5" type="int2" typeCode="5">
+            <parent column="test_id" foreignKey="testdata_cyclestats_test_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="test_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="cycle" nullable="true" remarks="The cycle number of the data point. Tracks number of charge/discharge cycles." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="test_time_s" nullable="true" remarks="The time in seconds since the start of the test, ignoring pauses." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="reported_charge_capacity_mah" nullable="true" remarks="The charge capacity reported by the cycler at the end of the cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="reported_discharge_capacity_mah" nullable="true" remarks="The discharge capacity reported by the cycler at the end of the cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="reported_charge_energy_mwh" nullable="true" remarks="The charge energy reported by the cycler at the end of the cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="reported_discharge_energy_mwh" nullable="true" remarks="The discharge energy reported by the cycler at the end of the cycle." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="calculated_charge_capacity_mah" nullable="true" remarks="The charge capacity at the end of the cycle. Calculated from test_data Table values by battetl. Should be the same as reported_charge_capacity_mah." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="calculated_max_charge_temp_c" nullable="true" remarks="The maximum temperature during the charge step of the cycle. Calculated from test_data table values by battetl." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="calculated_discharge_capacity_mah" nullable="true" remarks="The discharge capacity at the end of the cycle. Calculated from test_data table values by battetl. Should be the same as reported_discharge_capacity_mah." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="calculated_max_discharge_temp_c" nullable="true" remarks="The maximum temperature during the discharge step of the cycle. Calculated from test_data table values by battetl." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="calculated_cc_charge_time_s" nullable="true" remarks="The time in seconds spent in the constant current charge step of the cycle. Calculated from test_data table values by battetl." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="calculated_cv_charge_time_s" nullable="true" remarks="The time in seconds spent in the constant voltage charge step of the cycle. Calculated from test_data table values by battetl." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="calculated_cc_capacity_mah" nullable="true" remarks="The capacity in mAh delivered during the constant current charge step of the cycle. Calculated from test_data table values by battetl." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="calculated_cv_capacity_mah" nullable="true" remarks="The capacity in mAh delivered during the constant voltage charge step of the cycle. Calculated from test_data table values by battetl." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="16" name="calculated_coulombic_efficiency" nullable="true" remarks="Ratio of discharge capacity to charge capacity for cycle. Calculated from test_data table values by battetl." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="17" name="reported_coulombic_efficiency" nullable="true" remarks="Ratio of discharge capacity to charge capacity for cycle. Reported by cycler." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="18" name="reported_charge_time_s" nullable="true" remarks="The time in seconds spent in the charge step of the cycle. Reported by cycler." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="19" name="reported_discharge_time_s" nullable="true" remarks="The time in seconds spent in the discharge step of the cycle. Reported by cycler." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="20" name="calculated_fifty_percent_charge_time_s" nullable="true" remarks="The time in seconds to reach 50% of the final charge capacity for cycle. Calculated from test_data table values by battetl." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="21" name="calculated_eighty_percent_charge_time_s" nullable="true" remarks="The time in seconds to reach 80% of the final charge capacity for cycle. Calculated from test_data table values by battetl." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="22" name="calculated_charge_energy_mwh" nullable="true" remarks="The charge energy at the end of the cycle. Calculated from test_data table values by battetl. Should be the same as reported_charge_energy_mwh." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="23" name="calculated_discharge_energy_mwh" nullable="true" remarks="The discharge energy at the end of the cycle. Calculated from test_data table values by battetl. Should be the same as reported_discharge_energy_mwh." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="24" name="other_details" nullable="true" remarks="Other details about the test data cycle stats. Contains data for auxillary measurements." size="2147483647" type="jsonb" typeCode="1111"/>
+         <primaryKey column="cycle_stats_id" sequenceNumberInPK="1"/>
+         <index name="cyclestats_id" unique="true">
+            <column ascending="true" name="cycle_stats_id"/>
+         </index>
+         <index name="testdata_cyclestats_test_id_idx" unique="false">
+            <column ascending="true" name="test_id"/>
+         </index>
+      </table>
+      <table name="test_data_summary_10min" numRows="0" remarks="Materialized view of test_data table aggregated by 10 minute intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_20.tenmin,&#10;    _materialized_hypertable_20.test_id,&#10;    _materialized_hypertable_20.tenmin_cycle,&#10;    _materialized_hypertable_20.tenmin_test_time_s,&#10;    _materialized_hypertable_20.tenmin_unixtime_s,&#10;    _materialized_hypertable_20.tenmin_voltage_mv,&#10;    _materialized_hypertable_20.tenmin_current_ma&#10;   FROM _timescaledb_internal._materialized_hypertable_20&#10;  WHERE (_materialized_hypertable_20.tenmin &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(20)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('00:10:00'::interval, test_data.recorded_datetime) AS tenmin,&#10;    test_data.test_id,&#10;    max(test_data.cycle) AS tenmin_cycle,&#10;    max(test_data.test_time_s) AS tenmin_test_time_s,&#10;    max(test_data.unixtime_s) AS tenmin_unixtime_s,&#10;    avg(test_data.voltage_mv) AS tenmin_voltage_mv,&#10;    avg(test_data.current_ma) AS tenmin_current_ma&#10;   FROM test_data&#10;  WHERE (test_data.recorded_datetime &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(20)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('00:10:00'::interval, test_data.recorded_datetime)), test_data.test_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="tenmin" nullable="true" remarks="The datetime rounded to the nearest 10 minute interval." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="test_id" nullable="true" remarks="Refers to the test defined in test_meta table." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="tenmin_cycle" nullable="true" remarks="The cycle number of the test for the 10 minute interval." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="tenmin_test_time_s" nullable="true" remarks="The total test time in seconds for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="tenmin_unixtime_s" nullable="true" remarks="The Unix timestamp for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="tenmin_voltage_mv" nullable="true" remarks="The average voltage of the test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="tenmin_current_ma" nullable="true" remarks="The average current of the test for the 10 minute interval." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="test_data_summary_30s" numRows="0" remarks="Materialized view of test_data table aggregated by 30 second intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_21.thirtysec,&#10;    _materialized_hypertable_21.test_id,&#10;    _materialized_hypertable_21.thirtysec_cycle,&#10;    _materialized_hypertable_21.thirtysec_test_time_s,&#10;    _materialized_hypertable_21.thirtysec_unixtime_s,&#10;    _materialized_hypertable_21.thirtysec_voltage_mv,&#10;    _materialized_hypertable_21.thirtysec_current_ma&#10;   FROM _timescaledb_internal._materialized_hypertable_21&#10;  WHERE (_materialized_hypertable_21.thirtysec &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(21)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('00:00:30'::interval, test_data.recorded_datetime) AS thirtysec,&#10;    test_data.test_id,&#10;    max(test_data.cycle) AS thirtysec_cycle,&#10;    max(test_data.test_time_s) AS thirtysec_test_time_s,&#10;    max(test_data.unixtime_s) AS thirtysec_unixtime_s,&#10;    avg(test_data.voltage_mv) AS thirtysec_voltage_mv,&#10;    avg(test_data.current_ma) AS thirtysec_current_ma&#10;   FROM test_data&#10;  WHERE (test_data.recorded_datetime &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(21)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('00:00:30'::interval, test_data.recorded_datetime)), test_data.test_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="thirtysec" nullable="true" remarks="The datetime rounded to the nearest 30 second interval." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="test_id" nullable="true" remarks="Refers to the test defined in test_meta table." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="thirtysec_cycle" nullable="true" remarks="The cycle number of the test for the 30 second interval." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="thirtysec_test_time_s" nullable="true" remarks="The total test time in seconds for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="thirtysec_unixtime_s" nullable="true" remarks="The Unix timestamp for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="thirtysec_voltage_mv" nullable="true" remarks="The average voltage of the test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="thirtysec_current_ma" nullable="true" remarks="The average current of the test for the 30 second interval." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="test_data_summary_daily" numRows="0" remarks="Materialized view of test_data table aggregated by daily intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_23.day,&#10;    _materialized_hypertable_23.test_id,&#10;    _materialized_hypertable_23.day_cycle,&#10;    _materialized_hypertable_23.day_test_time_s,&#10;    _materialized_hypertable_23.day_unixtime_s,&#10;    _materialized_hypertable_23.day_voltage_mv,&#10;    _materialized_hypertable_23.day_current_ma&#10;   FROM _timescaledb_internal._materialized_hypertable_23&#10;  WHERE (_materialized_hypertable_23.day &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(23)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('1 day'::interval, test_data.recorded_datetime) AS day,&#10;    test_data.test_id,&#10;    max(test_data.cycle) AS day_cycle,&#10;    max(test_data.test_time_s) AS day_test_time_s,&#10;    max(test_data.unixtime_s) AS day_unixtime_s,&#10;    avg(test_data.voltage_mv) AS day_voltage_mv,&#10;    avg(test_data.current_ma) AS day_current_ma&#10;   FROM test_data&#10;  WHERE (test_data.recorded_datetime &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(23)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('1 day'::interval, test_data.recorded_datetime)), test_data.test_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="day" nullable="true" remarks="The datetime rounded to the nearest day." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="test_id" nullable="true" remarks="Refers to the test defined in test_meta table." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="day_cycle" nullable="true" remarks="The cycle number of the test for the day." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="day_test_time_s" nullable="true" remarks="The total test time in seconds for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="day_unixtime_s" nullable="true" remarks="The Unix timestamp for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="day_voltage_mv" nullable="true" remarks="The average voltage of the test for the day." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="day_current_ma" nullable="true" remarks="The average current of the test for the day." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="test_data_summary_hourly" numRows="0" remarks="Materialized view of test_data table aggregated by hourly intervals." schema="public" type="VIEW" viewSql=" SELECT _materialized_hypertable_22.hour,&#10;    _materialized_hypertable_22.test_id,&#10;    _materialized_hypertable_22.hour_cycle,&#10;    _materialized_hypertable_22.hour_test_time_s,&#10;    _materialized_hypertable_22.hour_unixtime_s,&#10;    _materialized_hypertable_22.hour_voltage_mv,&#10;    _materialized_hypertable_22.hour_current_ma&#10;   FROM _timescaledb_internal._materialized_hypertable_22&#10;  WHERE (_materialized_hypertable_22.hour &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(22)), '-infinity'::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket('01:00:00'::interval, test_data.recorded_datetime) AS hour,&#10;    test_data.test_id,&#10;    max(test_data.cycle) AS hour_cycle,&#10;    max(test_data.test_time_s) AS hour_test_time_s,&#10;    max(test_data.unixtime_s) AS hour_unixtime_s,&#10;    avg(test_data.voltage_mv) AS hour_voltage_mv,&#10;    avg(test_data.current_ma) AS hour_current_ma&#10;   FROM test_data&#10;  WHERE (test_data.recorded_datetime &gt;= COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(22)), '-infinity'::timestamp with time zone))&#10;  GROUP BY (time_bucket('01:00:00'::interval, test_data.recorded_datetime)), test_data.test_id;">
+         <column autoUpdated="false" defaultValue="null" digits="6" id="0" name="hour" nullable="true" remarks="The datetime rounded to the nearest hour." size="35" type="timestamptz" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="test_id" nullable="true" remarks="Refers to the test defined in test_meta table." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="hour_cycle" nullable="true" remarks="The cycle number of the test for the hour." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="hour_test_time_s" nullable="true" remarks="The total test time in seconds for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="hour_unixtime_s" nullable="true" remarks="The Unix timestamp for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="hour_voltage_mv" nullable="true" remarks="The average voltage of the test for the hour." size="0" type="numeric" typeCode="2"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="hour_current_ma" nullable="true" remarks="The average current of the test for the hour." size="0" type="numeric" typeCode="2"/>
+      </table>
+      <table name="test_meta" remarks="Contains high-level information about tests on single cells." schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('testdata_meta_test_id_seq'::regclass)" digits="0" id="0" name="test_id" nullable="false" remarks="Unique identifier for the test. Auto-incremented upon insertion." size="10" type="serial" typeCode="4">
+            <child column="test_id" foreignKey="audit_validation_meta_test_id_fkey" implied="false" onDeleteCascade="false" schema="audit" table="validation_meta"/>
+            <child column="test_id" foreignKey="maccor_fra_data_test_id_to_testdata_meta" implied="false" onDeleteCascade="false" schema="public" table="eis_data"/>
+            <child column="test_id" foreignKey="sil_meta_test_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="sil_meta"/>
+            <child column="test_id" foreignKey="sim_meta_test_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="sim_meta"/>
+            <child column="test_id" foreignKey="testdata_test_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="test_data"/>
+            <child column="test_id" foreignKey="testdata_cyclestats_test_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="test_data_cycle_stats"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="cell_id" nullable="true" remarks="Specific cell being tested. References the cell_id in the cells table." size="5" type="int2" typeCode="5">
+            <parent column="cell_id" foreignKey="testdata_meta_cell_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="cells"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="schedule_id" nullable="true" remarks="Schedule file used in the test. References the schedule_id in the schedule_meta table." size="5" type="int2" typeCode="5">
+            <parent column="schedule_id" foreignKey="testdata_meta_schedule_id_fkey" implied="false" onDeleteCascade="false" schema="public" table="schedule_meta"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="test_name" nullable="true" remarks="Name of the test in cycling software." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="start_date" nullable="true" remarks="Date the test was started. Populated manually in config file." size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="end_date" nullable="true" remarks="Date the test was ended. Populated manually in config file." size="13" type="date" typeCode="91"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="6" name="channel" nullable="true" remarks="Cycler channel the test was run on." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="7" name="ev_chamber" nullable="true" remarks="The environmental chamber the test was run in." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="8" name="ev_chamber_slot" nullable="true" remarks="The slot in the environmental chamber the test was run in." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="9" name="thermocouples" nullable="true" remarks="Specific thermocouple attached to the cell being tested." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="10" name="thermocouple_channels" nullable="true" remarks="Channel the thermocouple is attached to." size="5" type="int2" typeCode="5"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="11" name="comments" nullable="true" remarks="Additional info about the test." size="2147483647" type="text" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="12" name="project_id" nullable="true" remarks="Project the test is associated with. References the project_id in the projects table." size="10" type="int4" typeCode="4">
+            <parent column="project_id" foreignKey="arbin_schedules_project_id_fk" implied="false" onDeleteCascade="false" schema="public" table="projects"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="13" name="test_capacity_mah" nullable="true" remarks="Rated capacity of the cell being tested." size="10" type="int4" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="14" name="potentiostat_id" nullable="true" remarks="Potentiostat the test was run on. References the potentiostat_id in the potentiostats table." size="10" type="_int4" typeCode="2003"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="15" name="cycler_id" nullable="true" remarks="Cycler the test was run on. References the cycler_id in the cyclers table." size="10" type="int4" typeCode="4">
+            <parent column="cycler_id" foreignKey="cycler_id_testdata_meta" implied="false" onDeleteCascade="false" schema="public" table="cyclers"/>
+         </column>
+         <primaryKey column="test_id" sequenceNumberInPK="1"/>
+         <index name="test_id" unique="true">
+            <column ascending="true" name="test_id"/>
+         </index>
+      </table>
+   </tables>
+</database>
