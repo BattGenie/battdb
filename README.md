@@ -2,33 +2,52 @@
 
 # BattDB
 
-BattDB is a database based on Timescaledb (Postgres 15 extension) to store battery-related field and experimental (physical and virtual) data, as well as the metatada. Detailed database documentation and a few deployment options are provided.
+BattDB is a database based on TimescaleDB (Postgres 15 extension) to store battery-related field and experimental (physical and virtual) data, as well as the metadata. Detailed database documentation and a few deployment options are provided.
 
-### Overview
+## Overview
 
-- [Documentation](#documentation)
-- [Deployment Options](#deployment-options)
-  - [Local Deployment with Docker Compose](#local-deployment-with-docker-compose)
-    - [Prerequisites](#prerequisites)
-    - [Deployment Steps](#deployment-steps)
-  - [Using migration Scripts on your server](#using-migration-scripts-on-your-server)
-    - [Migrate with Flyway](#migrate-with-flyway)
-  - [Remote Deployment with Ansible](#remote-deployment-with-ansible)
-    - [Prerequisites](#prerequisites)
-    - [Client playbooks](#client-playbooks)
-    - [Deployment Steps](#deployment-steps)
-  - [SSL](#ssl)
-    - [Key](#key)
-    - [postgresql.conf](#postgresqlconf)
-    - [pg_hba.conf](#pg_hbaconf)
+- [BattDB](#battdb)
+  - [Overview](#overview)
+  - [Database Design Principles](#database-design-principles)
+  - [Documentation](#documentation)
+  - [Deployment Options](#deployment-options)
+    - [Local Deployment with Docker Compose](#local-deployment-with-docker-compose)
+      - [Prerequisites](#prerequisites)
+      - [Deployment Steps](#deployment-steps)
+    - [Using migration Scripts on your server](#using-migration-scripts-on-your-server)
+      - [Migrate with Flyway](#migrate-with-flyway)
+    - [Remote Deployment with Ansible](#remote-deployment-with-ansible)
+      - [Prerequisites](#prerequisites-1)
+      - [Client playbooks](#client-playbooks)
+      - [Deployment Steps](#deployment-steps-1)
+    - [SSL](#ssl)
+      - [Key](#key)
+      - [postgresql.conf](#postgresqlconf)
+      - [pg\_hba.conf](#pg_hbaconf)
+
+## Database Design Principles
+
+We believe in the power of good design and robust practices when it comes to our database management. Here's how we ensure the efficient and reliable data management for scale and longevity for our clients:
+
+1. Version-Controlled Schema: We use advanced tools like Flyway for database migration and version control. This allows us to meticulously track changes to our database schema over time, ensuring a reliable and consistent database structure that can evolve with your needs.
+
+2. Modular Design: Our database schema changes are broken down into smaller, manageable parts. This modular approach makes our database easier to understand, maintain, and adapt, ensuring that we can quickly respond to your changing requirements. Use a simpler database structure available in assets\migrations_scripts_quick for ad-hoc analyses and much more detailed and powerful, relational database structure for long-term storage of data.
+
+3. Comprehensive Documentation: We believe in transparency and clarity. That's why we provide detailed schema diagrams, making it easy for you to understand the structure of your database. This clear communication aids in decision-making and ensures that you're always in the loop.
+
+4. Environment Isolation: We maintain separate configurations for different environments such as development, staging, and production. This practice safeguards your production data and allows us to test changes in a controlled environment, ensuring the highest level of data integrity and reliability.
+
+5. Automated Deployment: We leverage the power of automation to reduce manual errors and streamline our deployment process. Using tools like Ansible and Docker, we ensure a repeatable and reliable setup and deployment of your database, delivering consistent performance and saving you time.
+
+In essence, our database design principles are all about providing you with a robust, reliable, and adaptable database solution that can grow with your business. Trust us to handle your data with the care and precision it deserves.
 
 ## Documentation
 
-A .dbml file for the database is available in the diagrams directory. A condensed version in PDF form [here](diagrams/battdb_condensed.pdf). The condensed version only includes the tables and columns that are used by the ETL process.
+The detailed database documentation, including the schema, can be found in the [docs/index.html](docs/index.html) file.
 
 ## Deployment Options
 
-BattDB can be deployed in following ways: locally using Docker-compose or using the migration scripts on self-hosted or managed Timescaledb server or remotely using Ansible on bare-metal.
+BattDB can be deployed in following ways: locally using Docker-compose or using the migration scripts on self-hosted or managed TimescaleDB server or remotely using Ansible on bare-metal.
 
 ### Local Deployment with Docker Compose
 
@@ -82,24 +101,24 @@ If you need to manually migrate your database, follow these steps:
 1. Download and install Flyway from <https://documentation.red-gate.com/fd/command-line-184127404.html>.
 2. Navigate to the Flyway folder and edit the conf/flyway.conf file with the following parameters:
 
-```conf
-flyway.url=jdbc:postgresql://[URL]:[PORT]/[DATABASE]
-# Example: flyway.url=jdbc:postgresql://localhost:5432/battdb
-flyway.user=[USERNAME]
-flyway.password=[PASSWORD]
-```
+    ```conf
+    flyway.url=jdbc:postgresql://[URL]:[PORT]/[DATABASE]
+    # Example: flyway.url=jdbc:postgresql://localhost:5432/battdb
+    flyway.user=[USERNAME]
+    flyway.password=[PASSWORD]
+    ```
 
 3. Update to latest version of the database
 
-```sh
-flyway migrate -locations=filesystem:./assets/migration_scripts
-```
+    ```sh
+    flyway migrate -locations=filesystem:./assets/migration_scripts
+    ```
 
- or update to specific version
+    or update to specific version
 
-```sh
-flyway -target="[VERSION]" migrate -locations=filesystem:./assets/migration_scripts
-```
+    ```sh
+    flyway -target="[VERSION]" migrate -locations=filesystem:./assets/migration_scripts
+    ```
 
 ### Remote Deployment with Ansible
 

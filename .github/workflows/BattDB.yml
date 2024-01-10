@@ -32,7 +32,7 @@ jobs:
 
       - name: Check Flyway migration scripts version
         run: |
-          DOCKER_FLYWAY_VERSION=$(docker exec -i postgres psql -U postgres battdb -t -c "SELECT version FROM flyway_schema_history ORDER BY version DESC LIMIT 1;" | xargs)
+          DOCKER_FLYWAY_VERSION=$(docker exec -i postgres psql -U postgres battdb -t -c "SELECT version FROM flyway_schema_history ORDER BY version::float DESC LIMIT 1;" | xargs)
           MIGRATION_SCRIPTS_VERSION=$(ls -1v assets/migration_scripts/ | tail -n 1 | grep -Po 'V\d+(\.\d+)*' | tail -n 1 | sed 's/^V//')
           echo "Flyway version in Docker: $DOCKER_FLYWAY_VERSION"
           echo "Flyway version in migration scripts: $MIGRATION_SCRIPTS_VERSION"
