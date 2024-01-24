@@ -2,20 +2,6 @@
 ALTER TABLE test_meta ADD COLUMN first_recorded_datetime timestamp with time zone;
 ALTER TABLE test_meta ADD COLUMN last_recorded_datetime timestamp with time zone;
 
--- Update test_meta.first_recorded_datetime and test_meta.last_recorded_datetime
--- This is a one-time update to populate the first_recorded_datetime and last_recorded_datetime columns in test_meta
-UPDATE test_meta
-SET first_recorded_datetime = (
-  SELECT MIN(recorded_datetime)
-  FROM test_data
-  WHERE test_data.test_id = test_meta.test_id
-),
-last_recorded_datetime = (
-  SELECT MAX(recorded_datetime)
-  FROM test_data
-  WHERE test_data.test_id = test_meta.test_id
-);
-
 -- Drop old materialized views
 DROP MATERIALIZED VIEW test_data_summary_10min;
 DROP MATERIALIZED VIEW test_data_summary_30s;
