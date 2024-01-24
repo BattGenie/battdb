@@ -136,6 +136,26 @@
                                                 <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
                                             </tr>
                                             <tr>
+                                                <td title="cycler_rt_channel_statuses_summary_10min.cycler_id&#39;s name implies that it&#39;s a child of cyclers.cycler_id, but it doesn&#39;t reference that column."><a href='cycler_rt_channel_statuses_summary_10min.html'>cycler_rt_channel_statuses_summary_10min</a><span class='relatedKey'>.cycler_id</span></td>
+                                                <td class="constraint detail">Implied Constraint</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="cycler_rt_channel_statuses_summary_30s.cycler_id&#39;s name implies that it&#39;s a child of cyclers.cycler_id, but it doesn&#39;t reference that column."><a href='cycler_rt_channel_statuses_summary_30s.html'>cycler_rt_channel_statuses_summary_30s</a><span class='relatedKey'>.cycler_id</span></td>
+                                                <td class="constraint detail">Implied Constraint</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="cycler_rt_channel_statuses_summary_daily.cycler_id&#39;s name implies that it&#39;s a child of cyclers.cycler_id, but it doesn&#39;t reference that column."><a href='cycler_rt_channel_statuses_summary_daily.html'>cycler_rt_channel_statuses_summary_daily</a><span class='relatedKey'>.cycler_id</span></td>
+                                                <td class="constraint detail">Implied Constraint</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="cycler_rt_channel_statuses_summary_hourly.cycler_id&#39;s name implies that it&#39;s a child of cyclers.cycler_id, but it doesn&#39;t reference that column."><a href='cycler_rt_channel_statuses_summ_f0bcaec3.html'>cycler_rt_channel_statuses_summary_hourly</a><span class='relatedKey'>.cycler_id</span></td>
+                                                <td class="constraint detail">Implied Constraint</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
                                                 <td title="test_meta.cycler_id references cyclers.cycler_id via cycler_id_testdata_meta"><a href='test_meta.html'>test_meta</a><span class='relatedKey'>.cycler_id</span></td>
                                                 <td class="constraint detail">cycler_id_testdata_meta</td>
                                                 <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
@@ -300,8 +320,8 @@
                                     <div class="chart tab-pane active" id="oneDegreeImg-chart" style="position: relative; overflow-x:auto;">
                                         <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
 <area shape="rect" id="node1" href="cycler_rt_channel_statuses.html" target="_top" title="cycler_rt_channel_statuses" alt="" coords="661,5,953,152">
-<area shape="rect" id="node2" href="cyclers.html" target="_top" title="cyclers" alt="" coords="272,159,617,404">
-<area shape="rect" id="node3" href="cyclers_meta.html" target="_top" title="cyclers_meta" alt="" coords="5,191,228,367">
+<area shape="rect" id="node2" href="cyclers.html" target="_top" title="cyclers" alt="" coords="272,144,617,389">
+<area shape="rect" id="node3" href="cyclers_meta.html" target="_top" title="cyclers_meta" alt="" coords="5,176,228,352">
 <area shape="rect" id="node4" href="test_meta.html" target="_top" title="test_meta" alt="" coords="687,169,927,404">
 </map>
                                         <a name='diagram'><img id="oneDegreeImg" src="../diagrams/tables/cyclers.1degree.png" usemap="#oneDegreeRelationshipsDiagram" class="diagram" border="0" align="left"></a>
@@ -312,10 +332,10 @@
 <area shape="rect" id="node2" href="cells.html" target="_top" title="cells" alt="" coords="387,33,502,121">
 <area shape="rect" id="node3" href="schedule_meta.html" target="_top" title="schedule_meta" alt="" coords="345,144,544,232">
 <area shape="rect" id="node4" href="test_meta.html" target="_top" title="test_meta" alt="" coords="687,169,927,404">
-<area shape="rect" id="node6" href="cyclers.html" target="_top" title="cyclers" alt="" coords="272,407,617,652">
+<area shape="rect" id="node6" href="cyclers.html" target="_top" title="cyclers" alt="" coords="272,392,617,637">
 <area shape="rect" id="node13" href="projects.html" target="_top" title="projects" alt="" coords="373,260,517,348">
 <area shape="rect" id="node5" href="cycler_rt_channel_statuses.html" target="_top" title="cycler_rt_channel_statuses" alt="" coords="661,421,953,568">
-<area shape="rect" id="node7" href="cyclers_meta.html" target="_top" title="cyclers_meta" alt="" coords="5,439,228,615">
+<area shape="rect" id="node7" href="cyclers_meta.html" target="_top" title="cyclers_meta" alt="" coords="5,424,228,600">
 <area shape="rect" id="node8" href="eis_data.html" target="_top" title="eis_data" alt="" coords="1053,427,1197,515">
 <area shape="rect" id="node9" href="sil_meta.html" target="_top" title="sil_meta" alt="" coords="1052,532,1197,620">
 <area shape="rect" id="node10" href="sim_meta.html" target="_top" title="sim_meta" alt="" coords="1047,111,1203,199">
@@ -326,31 +346,36 @@
                                     </div>
                                     <div class="chart tab-pane " id="oneimpliedDegreeImg-chart" style="position: relative; overflow-x:auto;">
                                         <map id="oneDegreeRelationshipsDiagramImplied" name="oneDegreeRelationshipsDiagramImplied">
-<area shape="rect" id="node1" href="cycler_rt_channel_statuses.html" target="_top" title="cycler_rt_channel_statuses" alt="" coords="661,5,953,152">
-<area shape="rect" id="node2" href="cyclers.html" target="_top" title="cyclers" alt="" coords="272,159,617,404">
-<area shape="rect" id="node3" href="cyclers_meta.html" target="_top" title="cyclers_meta" alt="" coords="5,191,228,367">
-<area shape="rect" id="node4" href="test_meta.html" target="_top" title="test_meta" alt="" coords="687,169,927,404">
+<area shape="rect" id="node1" href="cycler_rt_channel_statuses.html" target="_top" title="cycler_rt_channel_statuses" alt="" coords="730,5,1022,152">
+<area shape="rect" id="node2" href="cyclers.html" target="_top" title="cyclers" alt="" coords="272,333,617,579">
+<area shape="rect" id="node7" href="cyclers_meta.html" target="_top" title="cyclers_meta" alt="" coords="5,365,228,541">
+<area shape="rect" id="node3" href="cycler_rt_channel_statuses_summary_10min.html" target="_top" title="cycler_rt_channel_statuses_summary_10min" alt="" coords="663,169,1089,263">
+<area shape="rect" id="node4" href="cycler_rt_channel_statuses_summary_30s.html" target="_top" title="cycler_rt_channel_statuses_summary_30s" alt="" coords="675,280,1077,373">
+<area shape="rect" id="node5" href="cycler_rt_channel_statuses_summary_daily.html" target="_top" title="cycler_rt_channel_statuses_summary_daily" alt="" coords="669,391,1083,484">
+<area shape="rect" id="node6" href="cycler_rt_channel_statuses_summ_f0bcaec3.html" target="_top" title="cycler_rt_channel_statuses_summary_hourly" alt="" coords="661,501,1091,595">
+<area shape="rect" id="node8" href="test_meta.html" target="_top" title="test_meta" alt="" coords="756,612,996,847">
 </map>
                                         <a name='diagram'><img id="oneimpliedDegreeImg" src="../diagrams/tables/cyclers.implied1degrees.png" usemap="#oneDegreeRelationshipsDiagramImplied" class="diagram" border="0" align="left"></a>
                                     </div>
                                     <div class="chart tab-pane " id="twoimpliedDegreeImg-chart" style="position: relative; overflow-x:auto;">
                                         <map id="twoDegreesRelationshipsDiagramImplied" name="twoDegreesRelationshipsDiagramImplied">
-<area shape="rect" id="node1" title="audit.validation_meta" alt="" coords="964,5,1219,93">
-<area shape="rect" id="node2" href="cells.html" target="_top" title="cells" alt="" coords="387,37,502,125">
-<area shape="rect" id="node3" href="schedule_meta.html" target="_top" title="schedule_meta" alt="" coords="345,149,544,237">
-<area shape="rect" id="node4" href="test_meta.html" target="_top" title="test_meta" alt="" coords="661,176,901,411">
-<area shape="rect" id="node6" href="cyclers.html" target="_top" title="cyclers" alt="" coords="272,404,617,649">
-<area shape="rect" id="node16" href="projects.html" target="_top" title="projects" alt="" coords="373,267,517,355">
-<area shape="rect" id="node5" href="cycler_rt_channel_statuses.html" target="_top" title="cycler_rt_channel_statuses" alt="" coords="945,463,1237,609">
-<area shape="rect" id="node7" href="cyclers_meta.html" target="_top" title="cyclers_meta" alt="" coords="5,436,228,612">
-<area shape="rect" id="node8" href="eis_data.html" target="_top" title="eis_data" alt="" coords="1019,111,1163,199">
-<area shape="rect" id="node9" href="hil_data.html" target="_top" title="hil_data" alt="" coords="1287,465,1429,553">
-<area shape="rect" id="node10" href="sil_data.html" target="_top" title="sil_data" alt="" coords="1288,571,1428,659">
-<area shape="rect" id="node11" href="sil_meta.html" target="_top" title="sil_meta" alt="" coords="1019,627,1164,715">
-<area shape="rect" id="node12" href="sim_data.html" target="_top" title="sim_data" alt="" coords="1283,360,1433,448">
-<area shape="rect" id="node13" href="sim_meta.html" target="_top" title="sim_meta" alt="" coords="1013,252,1169,340">
-<area shape="rect" id="node14" href="test_data.html" target="_top" title="test_data" alt="" coords="1281,217,1435,305">
-<area shape="rect" id="node15" href="test_data_cycle_stats.html" target="_top" title="test_data_cycle_stats" alt="" coords="968,357,1215,445">
+<area shape="rect" id="node1" title="audit.validation_meta" alt="" coords="1135,5,1389,93">
+<area shape="rect" id="node2" href="cells.html" target="_top" title="cells" alt="" coords="387,60,502,148">
+<area shape="rect" id="node3" href="schedule_meta.html" target="_top" title="schedule_meta" alt="" coords="345,171,544,259">
+<area shape="rect" id="node4" href="test_meta.html" target="_top" title="test_meta" alt="" coords="756,207,996,441">
+<area shape="rect" id="node6" href="cyclers.html" target="_top" title="cyclers" alt="" coords="272,621,617,867">
+<area shape="rect" id="node17" href="projects.html" target="_top" title="projects" alt="" coords="373,297,517,385">
+<area shape="rect" id="node5" href="cycler_rt_channel_statuses.html" target="_top" title="cycler_rt_channel_statuses" alt="" coords="730,901,1022,1048">
+<area shape="rect" id="node11" href="cyclers_meta.html" target="_top" title="cyclers_meta" alt="" coords="5,653,228,829">
+<area shape="rect" id="node7" href="cycler_rt_channel_statuses_summary_10min.html" target="_top" title="cycler_rt_channel_statuses_summary_10min" alt="" coords="663,459,1089,552">
+<area shape="rect" id="node8" href="cycler_rt_channel_statuses_summary_30s.html" target="_top" title="cycler_rt_channel_statuses_summary_30s" alt="" coords="675,569,1077,663">
+<area shape="rect" id="node9" href="cycler_rt_channel_statuses_summary_daily.html" target="_top" title="cycler_rt_channel_statuses_summary_daily" alt="" coords="669,680,1083,773">
+<area shape="rect" id="node10" href="cycler_rt_channel_statuses_summ_f0bcaec3.html" target="_top" title="cycler_rt_channel_statuses_summary_hourly" alt="" coords="661,791,1091,884">
+<area shape="rect" id="node12" href="eis_data.html" target="_top" title="eis_data" alt="" coords="1190,427,1334,515">
+<area shape="rect" id="node13" href="sil_meta.html" target="_top" title="sil_meta" alt="" coords="1189,532,1335,620">
+<area shape="rect" id="node14" href="sim_meta.html" target="_top" title="sim_meta" alt="" coords="1184,111,1340,199">
+<area shape="rect" id="node15" href="test_data.html" target="_top" title="test_data" alt="" coords="1185,216,1339,304">
+<area shape="rect" id="node16" href="test_data_cycle_stats.html" target="_top" title="test_data_cycle_stats" alt="" coords="1139,321,1385,409">
 </map>
                                         <a name='diagram'><img id="twoimpliedDegreeImg" src="../diagrams/tables/cyclers.implied2degrees.png" usemap="#twoDegreesRelationshipsDiagramImplied" class="diagram" border="0" align="left"></a>
                                     </div>

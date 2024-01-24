@@ -4,19 +4,19 @@ digraph "twoDegreesRelationshipsDiagramImplied" {
   "audit.validation_meta":"elipses":w -> "schedule_meta":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
   "audit.validation_meta":"elipses":w -> "test_meta":"test_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "cells":"elipses":w -> "cells_meta":"cell_type_id":e [arrowhead=none dir=back arrowtail=crowodot];
-  "cycler_rt_channel_statuses":"elipses":w -> "cyclers":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
   "eis_data":"elipses":w -> "test_meta":"test_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "models_meta":"elipses":w -> "cells_meta":"cell_type_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "modules_meta":"elipses":w -> "cells_meta":"cell_type_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "profiles_meta":"elipses":w -> "cells_meta":"cell_type_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "sil_meta":"elipses":w -> "cells_meta":"cell_type_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "sil_meta":"elipses":w -> "test_meta":"test_id":e [arrowhead=none dir=back arrowtail=crowodot];
-  "sim_data":"sim_data_id":w -> "cycler_rt_channel_statuses":"elipses":e [arrowhead=none dir=back arrowtail=crowodot style=dashed];
   "sim_data":"sim_id":w -> "sim_meta":"sim_id.type":e [arrowhead=none dir=back arrowtail=crowodot];
-  "sim_data":"test_data_id":w -> "cycler_rt_channel_statuses":"elipses":e [arrowhead=none dir=back arrowtail=crowodot style=dashed];
+  "sim_data_summary_10min":"sim_id":w -> "sim_meta":"sim_id.type":e [arrowhead=none dir=back arrowtail=crowodot style=dashed];
+  "sim_data_summary_30s":"sim_id":w -> "sim_meta":"sim_id.type":e [arrowhead=none dir=back arrowtail=crowodot style=dashed];
+  "sim_data_summary_daily":"sim_id":w -> "sim_meta":"sim_id.type":e [arrowhead=none dir=back arrowtail=crowodot style=dashed];
+  "sim_data_summary_hourly":"sim_id":w -> "sim_meta":"sim_id.type":e [arrowhead=none dir=back arrowtail=crowodot style=dashed];
   "sim_meta":"cell_type_id":w -> "cells_meta":"cell_type_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "sim_meta":"test_id":w -> "test_meta":"test_id":e [arrowhead=none dir=back arrowtail=crowodot];
-  "test_data":"elipses":w -> "cycler_rt_channel_statuses":"elipses":e [arrowhead=none dir=back arrowtail=crowodot style=dashed];
   "test_data":"elipses":w -> "test_meta":"test_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "test_data_cycle_stats":"elipses":w -> "test_meta":"test_id":e [arrowhead=none dir=back arrowtail=crowodot];
   "test_meta":"cell_id":w -> "cells":"elipses":e [arrowhead=none dir=back arrowtail=crowodot];
@@ -56,17 +56,6 @@ digraph "twoDegreesRelationshipsDiagramImplied" {
     URL="cells_meta.html"
     target="_top"
     tooltip="cells_meta"
-  ];
-  "cycler_rt_channel_statuses" [
-   label=<
-    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
-      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="159" HEIGHT="16"><B>cycler_rt_channel_statuses</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 1</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">6 &gt;</TD></TR>
-    </TABLE>>
-    URL="cycler_rt_channel_statuses.html"
-    target="_top"
-    tooltip="cycler_rt_channel_statuses"
   ];
   "cyclers" [
    label=<
@@ -160,16 +149,58 @@ digraph "twoDegreesRelationshipsDiagramImplied" {
    label=<
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
       <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="53" HEIGHT="16"><B>sim_data</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="sim_data_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="134" HEIGHT="16">sim_data_id</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="sim_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="134" HEIGHT="16">sim_id</TD></TR></TABLE></TD></TR>
-      <TR><TD PORT="test_data_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="134" HEIGHT="16">test_data_id</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="insert_time" COLSPAN="3" BGCOLOR="#ffffff" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="134" HEIGHT="16">insert_time</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 3</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 1</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
     </TABLE>>
     URL="sim_data.html"
     target="_top"
     tooltip="sim_data"
+  ];
+  "sim_data_summary_10min" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="157" HEIGHT="16"><B>sim_data_summary_10min</B></TD><TD ALIGN="RIGHT">[view]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="sim_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="182" HEIGHT="16">sim_id</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+    </TABLE>>
+    URL="sim_data_summary_10min.html"
+    target="_top"
+    tooltip="sim_data_summary_10min"
+  ];
+  "sim_data_summary_30s" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="140" HEIGHT="16"><B>sim_data_summary_30s</B></TD><TD ALIGN="RIGHT">[view]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="sim_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="192" HEIGHT="16">sim_id</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+    </TABLE>>
+    URL="sim_data_summary_30s.html"
+    target="_top"
+    tooltip="sim_data_summary_30s"
+  ];
+  "sim_data_summary_daily" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="149" HEIGHT="16"><B>sim_data_summary_daily</B></TD><TD ALIGN="RIGHT">[view]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="sim_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="160" HEIGHT="16">sim_id</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+    </TABLE>>
+    URL="sim_data_summary_daily.html"
+    target="_top"
+    tooltip="sim_data_summary_daily"
+  ];
+  "sim_data_summary_hourly" [
+   label=<
+    <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
+      <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="159" HEIGHT="16"><B>sim_data_summary_hourly</B></TD><TD ALIGN="RIGHT">[view]</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="sim_id" COLSPAN="3" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="167" HEIGHT="16">sim_id</TD></TR></TABLE></TD></TR>
+      <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
+    </TABLE>>
+    URL="sim_data_summary_hourly.html"
+    target="_top"
+    tooltip="sim_data_summary_hourly"
   ];
   "sim_meta" [
    label=<
@@ -183,7 +214,7 @@ digraph "twoDegreesRelationshipsDiagramImplied" {
       <TR><TD PORT="test_id" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"><IMG SRC="../../images/foreignKeys.png"/></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="78" HEIGHT="16">test_id</TD></TR></TABLE></TD><TD PORT="test_id.type" ALIGN="LEFT">int4[10]</TD></TR>
       <TR><TD PORT="configs" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="78" HEIGHT="16">configs</TD></TR></TABLE></TD><TD PORT="configs.type" ALIGN="LEFT">jsonb[2147483647]</TD></TR>
       <TR><TD PORT="other_details" COLSPAN="2" ALIGN="LEFT"><TABLE BORDER="0" CELLSPACING="0" ALIGN="LEFT"><TR ALIGN="LEFT"><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="15" HEIGHT="16"></TD><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="78" HEIGHT="16">other_details</TD></TR></TABLE></TD><TD PORT="other_details.type" ALIGN="LEFT">jsonb[2147483647]</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">1 &gt;</TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">5 &gt;</TD></TR>
     </TABLE>>
     URL="sim_meta.html"
     target="_top"
@@ -194,7 +225,7 @@ digraph "twoDegreesRelationshipsDiagramImplied" {
     <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0" BGCOLOR="#ffffff">
       <TR><TD COLSPAN="3"  BGCOLOR="#f5f5f5"><TABLE BORDER="0" CELLSPACING="0"><TR><TD ALIGN="LEFT" FIXEDSIZE="TRUE" WIDTH="55" HEIGHT="16"><B>test_data</B></TD><TD ALIGN="RIGHT">[table]</TD></TR></TABLE></TD></TR>
       <TR><TD PORT="elipses" COLSPAN="3" ALIGN="LEFT">...</TD></TR>
-      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 2</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
+      <TR><TD ALIGN="LEFT" BGCOLOR="#ffffff">&lt; 1</TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD><TD ALIGN="RIGHT" BGCOLOR="#ffffff">  </TD></TR>
     </TABLE>>
     URL="test_data.html"
     target="_top"
