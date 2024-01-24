@@ -139,7 +139,7 @@
                                     <td><p>The datetime rounded to the nearest 30 second interval.</p></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="hil_id">hil_id</span></td>
+                                    <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="hil_id">hil_id</span></td>
                                     <td>int4</td>
                                     <td>10</td>
                                     <td title='nullable'>√</td>
@@ -151,6 +151,11 @@
                                     </td>
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td title="hil_data_summary_30s.hil_id&#39;s name implies that it&#39;s a child of hil_meta.hil_id, but it doesn&#39;t reference that column."><a href='hil_meta.html'>hil_meta</a><span class='relatedKey'>.hil_id</span></td>
+                                                <td class="constraint detail">Implied Constraint</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
                                         </table>
                                     </td>
                                     <td><p>Refers to the HIL test defined in hil_meta table.</p></td>
@@ -377,6 +382,8 @@
                                 <h5>Close relationships within degrees of separation</h5>
                                 <ul class="nav nav-tabs pull-left ui-sortable-handle">
                                     <li class="active"><a href="#oneDegreeImg-chart" data-toggle="tab" aria-expanded="true">One</a></li>
+                                    <li class=""><a href="#oneimpliedDegreeImg-chart" data-toggle="tab" aria-expanded="true">One implied</a></li>
+                                    <li class=""><a href="#twoimpliedDegreeImg-chart" data-toggle="tab" aria-expanded="true">Two implied</a></li>
                                 </ul>
                                 <div class="tab-content no-padding">
                                     <div class="chart tab-pane active" id="oneDegreeImg-chart" style="position: relative; overflow-x:auto;">
@@ -384,6 +391,25 @@
 <area shape="rect" id="node1" href="hil_data_summary_30s.html" target="_top" title="hil_data_summary_30s" alt="" coords="5,5,540,461">
 </map>
                                         <a name='diagram'><img id="oneDegreeImg" src="../diagrams/tables/hil_data_summary_30s.1degree.png" usemap="#oneDegreeRelationshipsDiagram" class="diagram" border="0" align="left"></a>
+                                    </div>
+                                    <div class="chart tab-pane " id="oneimpliedDegreeImg-chart" style="position: relative; overflow-x:auto;">
+                                        <map id="oneDegreeRelationshipsDiagramImplied" name="oneDegreeRelationshipsDiagramImplied">
+<area shape="rect" id="node1" href="hil_data_summary_30s.html" target="_top" title="hil_data_summary_30s" alt="" coords="221,5,756,461">
+<area shape="rect" id="node2" href="hil_meta.html" target="_top" title="hil_meta" alt="" coords="5,37,177,184">
+</map>
+                                        <a name='diagram'><img id="oneimpliedDegreeImg" src="../diagrams/tables/hil_data_summary_30s.implied1degrees.png" usemap="#oneDegreeRelationshipsDiagramImplied" class="diagram" border="0" align="left"></a>
+                                    </div>
+                                    <div class="chart tab-pane " id="twoimpliedDegreeImg-chart" style="position: relative; overflow-x:auto;">
+                                        <map id="twoDegreesRelationshipsDiagramImplied" name="twoDegreesRelationshipsDiagramImplied">
+<area shape="rect" id="node1" href="hil_data.html" target="_top" title="hil_data" alt="" coords="576,5,719,93">
+<area shape="rect" id="node2" href="hil_meta.html" target="_top" title="hil_meta" alt="" coords="164,224,336,371">
+<area shape="rect" id="node7" href="cells.html" target="_top" title="cells" alt="" coords="5,256,120,344">
+<area shape="rect" id="node3" href="hil_data_summary_10min.html" target="_top" title="hil_data_summary_10min" alt="" coords="509,111,786,175">
+<area shape="rect" id="node4" href="hil_data_summary_30s.html" target="_top" title="hil_data_summary_30s" alt="" coords="380,192,915,648">
+<area shape="rect" id="node5" href="hil_data_summary_daily.html" target="_top" title="hil_data_summary_daily" alt="" coords="514,665,781,729">
+<area shape="rect" id="node6" href="hil_data_summary_hourly.html" target="_top" title="hil_data_summary_hourly" alt="" coords="507,747,787,811">
+</map>
+                                        <a name='diagram'><img id="twoimpliedDegreeImg" src="../diagrams/tables/hil_data_summary_30s.implied2degrees.png" usemap="#twoDegreesRelationshipsDiagramImplied" class="diagram" border="0" align="left"></a>
                                     </div>
                                 </div>
                             </div>

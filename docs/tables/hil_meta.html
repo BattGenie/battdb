@@ -135,6 +135,26 @@
                                                 <td class="constraint detail">hil_data_hil_id_fkey</td>
                                                 <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
                                             </tr>
+                                            <tr>
+                                                <td title="hil_data_summary_10min.hil_id&#39;s name implies that it&#39;s a child of hil_meta.hil_id, but it doesn&#39;t reference that column."><a href='hil_data_summary_10min.html'>hil_data_summary_10min</a><span class='relatedKey'>.hil_id</span></td>
+                                                <td class="constraint detail">Implied Constraint</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="hil_data_summary_30s.hil_id&#39;s name implies that it&#39;s a child of hil_meta.hil_id, but it doesn&#39;t reference that column."><a href='hil_data_summary_30s.html'>hil_data_summary_30s</a><span class='relatedKey'>.hil_id</span></td>
+                                                <td class="constraint detail">Implied Constraint</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="hil_data_summary_daily.hil_id&#39;s name implies that it&#39;s a child of hil_meta.hil_id, but it doesn&#39;t reference that column."><a href='hil_data_summary_daily.html'>hil_data_summary_daily</a><span class='relatedKey'>.hil_id</span></td>
+                                                <td class="constraint detail">Implied Constraint</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td title="hil_data_summary_hourly.hil_id&#39;s name implies that it&#39;s a child of hil_meta.hil_id, but it doesn&#39;t reference that column."><a href='hil_data_summary_hourly.html'>hil_data_summary_hourly</a><span class='relatedKey'>.hil_id</span></td>
+                                                <td class="constraint detail">Implied Constraint</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
                                         </table>
                                     </td>
                                     <td>
@@ -263,7 +283,7 @@
                                     <td><p>The user who launched the HIL test.</p></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="cell_id">cell_id</span></td>
+                                    <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="cell_id">cell_id</span></td>
                                     <td>int4</td>
                                     <td>10</td>
                                     <td title='nullable'>√</td>
@@ -275,6 +295,11 @@
                                     </td>
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td title="hil_meta.cell_id&#39;s name implies that it&#39;s a child of cells.cell_id, but it doesn&#39;t reference that column."><a href='cells.html'>cells</a><span class='relatedKey'>.cell_id</span></td>
+                                                <td class="constraint detail">Implied Constraint</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
                                         </table>
                                     </td>
                                     <td><p>The cell used in the HIL test. References the cell_id in the cells table.</p></td>
@@ -339,23 +364,35 @@
                                 <div class="tab-content no-padding">
                                     <div class="chart tab-pane active" id="oneDegreeImg-chart" style="position: relative; overflow-x:auto;">
                                         <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
-<area shape="rect" id="node1" href="hil_data.html" target="_top" title="hil_data" alt="" coords="364,5,683,181">
-<area shape="rect" id="node2" href="hil_meta.html" target="_top" title="hil_meta" alt="" coords="5,32,320,365">
+<area shape="rect" id="node1" href="hil_data.html" target="_top" title="hil_data" alt="" coords="364,8,683,155">
+<area shape="rect" id="node2" href="hil_meta.html" target="_top" title="hil_meta" alt="" coords="5,5,320,339">
 </map>
                                         <a name='diagram'><img id="oneDegreeImg" src="../diagrams/tables/hil_meta.1degree.png" usemap="#oneDegreeRelationshipsDiagram" class="diagram" border="0" align="left"></a>
                                     </div>
                                     <div class="chart tab-pane " id="oneimpliedDegreeImg-chart" style="position: relative; overflow-x:auto;">
                                         <map id="oneDegreeRelationshipsDiagramImplied" name="oneDegreeRelationshipsDiagramImplied">
-<area shape="rect" id="node1" href="hil_data.html" target="_top" title="hil_data" alt="" coords="364,5,683,181">
-<area shape="rect" id="node2" href="hil_meta.html" target="_top" title="hil_meta" alt="" coords="5,32,320,365">
+<area shape="rect" id="node1" href="hil_data.html" target="_top" title="hil_data" alt="" coords="723,5,1041,152">
+<area shape="rect" id="node2" href="hil_meta.html" target="_top" title="hil_meta" alt="" coords="325,277,640,611">
+<area shape="rect" id="node7" href="cells.html" target="_top" title="cells" alt="" coords="5,515,281,691">
+<area shape="rect" id="node3" href="hil_data_summary_10min.html" target="_top" title="hil_data_summary_10min" alt="" coords="690,169,1074,263">
+<area shape="rect" id="node4" href="hil_data_summary_30s.html" target="_top" title="hil_data_summary_30s" alt="" coords="684,280,1080,373">
+<area shape="rect" id="node5" href="hil_data_summary_daily.html" target="_top" title="hil_data_summary_daily" alt="" coords="705,391,1059,484">
+<area shape="rect" id="node6" href="hil_data_summary_hourly.html" target="_top" title="hil_data_summary_hourly" alt="" coords="700,501,1064,595">
 </map>
                                         <a name='diagram'><img id="oneimpliedDegreeImg" src="../diagrams/tables/hil_meta.implied1degrees.png" usemap="#oneDegreeRelationshipsDiagramImplied" class="diagram" border="0" align="left"></a>
                                     </div>
                                     <div class="chart tab-pane " id="twoimpliedDegreeImg-chart" style="position: relative; overflow-x:auto;">
                                         <map id="twoDegreesRelationshipsDiagramImplied" name="twoDegreesRelationshipsDiagramImplied">
-<area shape="rect" id="node1" href="hil_data.html" target="_top" title="hil_data" alt="" coords="364,44,683,220">
-<area shape="rect" id="node2" href="cycler_rt_channel_statuses.html" target="_top" title="cycler_rt_channel_statuses" alt="" coords="17,5,309,93">
-<area shape="rect" id="node3" href="hil_meta.html" target="_top" title="hil_meta" alt="" coords="5,111,320,444">
+<area shape="rect" id="node1" title="audit.validation_meta" alt="" coords="961,5,1216,93">
+<area shape="rect" id="node2" href="cells.html" target="_top" title="cells" alt="" coords="212,76,488,252">
+<area shape="rect" id="node3" href="test_meta.html" target="_top" title="test_meta" alt="" coords="610,79,769,167">
+<area shape="rect" id="node4" href="cells_meta.html" target="_top" title="cells_meta" alt="" coords="5,108,168,196">
+<area shape="rect" id="node5" href="hil_data.html" target="_top" title="hil_data" alt="" coords="929,111,1248,257">
+<area shape="rect" id="node6" href="hil_meta.html" target="_top" title="hil_meta" alt="" coords="532,327,847,660">
+<area shape="rect" id="node7" href="hil_data_summary_10min.html" target="_top" title="hil_data_summary_10min" alt="" coords="897,275,1281,368">
+<area shape="rect" id="node8" href="hil_data_summary_30s.html" target="_top" title="hil_data_summary_30s" alt="" coords="891,385,1287,479">
+<area shape="rect" id="node9" href="hil_data_summary_daily.html" target="_top" title="hil_data_summary_daily" alt="" coords="911,496,1266,589">
+<area shape="rect" id="node10" href="hil_data_summary_hourly.html" target="_top" title="hil_data_summary_hourly" alt="" coords="907,607,1271,700">
 </map>
                                         <a name='diagram'><img id="twoimpliedDegreeImg" src="../diagrams/tables/hil_meta.implied2degrees.png" usemap="#twoDegreesRelationshipsDiagramImplied" class="diagram" border="0" align="left"></a>
                                     </div>

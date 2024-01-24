@@ -139,7 +139,7 @@
                                     <td><p>The datetime rounded to the nearest day.</p></td>
                                 </tr>
                                 <tr>
-                                    <td><span id="sim_id">sim_id</span></td>
+                                    <td class='foreignKey' title='Foreign Key'><i class='icon ion-key iconkey' style='padding-left: 5px;'></i><span id="sim_id">sim_id</span></td>
                                     <td>int4</td>
                                     <td>10</td>
                                     <td title='nullable'>√</td>
@@ -151,6 +151,11 @@
                                     </td>
                                     <td>
                                         <table border='0' cellspacing='0' cellpadding='0'>
+                                            <tr>
+                                                <td title="sim_data_summary_daily.sim_id&#39;s name implies that it&#39;s a child of sim_meta.sim_id, but it doesn&#39;t reference that column."><a href='sim_meta.html'>sim_meta</a><span class='relatedKey'>.sim_id</span></td>
+                                                <td class="constraint detail">Implied Constraint</td>
+                                                <td class="constraint detail"><span title='Restrict delete:&#10;Parent cannot be deleted if children exist'>R</span></td>
+                                            </tr>
                                         </table>
                                     </td>
                                     <td><p>Refers to the simulation test defined in sim_meta table.</p></td>
@@ -292,6 +297,8 @@
                                 <h5>Close relationships within degrees of separation</h5>
                                 <ul class="nav nav-tabs pull-left ui-sortable-handle">
                                     <li class="active"><a href="#oneDegreeImg-chart" data-toggle="tab" aria-expanded="true">One</a></li>
+                                    <li class=""><a href="#oneimpliedDegreeImg-chart" data-toggle="tab" aria-expanded="true">One implied</a></li>
+                                    <li class=""><a href="#twoimpliedDegreeImg-chart" data-toggle="tab" aria-expanded="true">Two implied</a></li>
                                 </ul>
                                 <div class="tab-content no-padding">
                                     <div class="chart tab-pane active" id="oneDegreeImg-chart" style="position: relative; overflow-x:auto;">
@@ -299,6 +306,26 @@
 <area shape="rect" id="node1" href="sim_data_summary_daily.html" target="_top" title="sim_data_summary_daily" alt="" coords="5,5,407,315">
 </map>
                                         <a name='diagram'><img id="oneDegreeImg" src="../diagrams/tables/sim_data_summary_daily.1degree.png" usemap="#oneDegreeRelationshipsDiagram" class="diagram" border="0" align="left"></a>
+                                    </div>
+                                    <div class="chart tab-pane " id="oneimpliedDegreeImg-chart" style="position: relative; overflow-x:auto;">
+                                        <map id="oneDegreeRelationshipsDiagramImplied" name="oneDegreeRelationshipsDiagramImplied">
+<area shape="rect" id="node1" href="sim_data_summary_daily.html" target="_top" title="sim_data_summary_daily" alt="" coords="205,5,607,315">
+<area shape="rect" id="node2" href="sim_meta.html" target="_top" title="sim_meta" alt="" coords="5,37,161,213">
+</map>
+                                        <a name='diagram'><img id="oneimpliedDegreeImg" src="../diagrams/tables/sim_data_summary_daily.implied1degrees.png" usemap="#oneDegreeRelationshipsDiagramImplied" class="diagram" border="0" align="left"></a>
+                                    </div>
+                                    <div class="chart tab-pane " id="twoimpliedDegreeImg-chart" style="position: relative; overflow-x:auto;">
+                                        <map id="twoDegreesRelationshipsDiagramImplied" name="twoDegreesRelationshipsDiagramImplied">
+<area shape="rect" id="node1" href="sim_data.html" target="_top" title="sim_data" alt="" coords="537,5,688,93">
+<area shape="rect" id="node2" href="sim_meta.html" target="_top" title="sim_meta" alt="" coords="212,189,368,365">
+<area shape="rect" id="node7" href="cells_meta.html" target="_top" title="cells_meta" alt="" coords="5,183,168,271">
+<area shape="rect" id="node8" href="test_meta.html" target="_top" title="test_meta" alt="" coords="7,288,166,376">
+<area shape="rect" id="node3" href="sim_data_summary_10min.html" target="_top" title="sim_data_summary_10min" alt="" coords="470,111,755,175">
+<area shape="rect" id="node4" href="sim_data_summary_30s.html" target="_top" title="sim_data_summary_30s" alt="" coords="481,192,744,256">
+<area shape="rect" id="node5" href="sim_data_summary_daily.html" target="_top" title="sim_data_summary_daily" alt="" coords="412,273,813,583">
+<area shape="rect" id="node6" href="sim_data_summary_hourly.html" target="_top" title="sim_data_summary_hourly" alt="" coords="469,600,757,664">
+</map>
+                                        <a name='diagram'><img id="twoimpliedDegreeImg" src="../diagrams/tables/sim_data_summary_daily.implied2degrees.png" usemap="#twoDegreesRelationshipsDiagramImplied" class="diagram" border="0" align="left"></a>
                                     </div>
                                 </div>
                             </div>

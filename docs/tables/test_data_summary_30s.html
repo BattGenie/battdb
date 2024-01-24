@@ -74,19 +74,6 @@
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <h1>test_data_summary_30s</h1><p><span id="recordNumber">0</span> rows</p><br />
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <i class="fa fa-file-text-o"></i>
-                            <h3 id="Description" class="box-title">Description</h3>
-                            <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                            </div>
-                        </div><!-- /.box-header -->
-                        <div class="box-body clearfix">
-                            <p>Materialized view of test_data table aggregated by 30 second intervals.</p>
-                        </div><!-- /.box-body -->
-                    </div>
                 </section>
                 <!-- Main content -->
                 <section class="content">
@@ -136,7 +123,7 @@
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
                                     </td>
-                                    <td><p>The datetime rounded to the nearest 30 second interval.</p></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td><span id="test_id">test_id</span></td>
@@ -153,7 +140,7 @@
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
                                     </td>
-                                    <td><p>Refers to the test defined in test_meta table.</p></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td><span id="thirtysec_cycle">thirtysec_cycle</span></td>
@@ -170,7 +157,24 @@
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
                                     </td>
-                                    <td><p>The cycle number of the test for the 30 second interval.</p></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="thirtysec_step">thirtysec_step</span></td>
+                                    <td>int2</td>
+                                    <td>5</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td><span id="thirtysec_test_time_s">thirtysec_test_time_s</span></td>
@@ -187,7 +191,24 @@
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
                                     </td>
-                                    <td><p>The total test time in seconds for the 30 second interval.</p></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td><span id="thirtysec_step_time_s">thirtysec_step_time_s</span></td>
+                                    <td>numeric</td>
+                                    <td>0</td>
+                                    <td title='nullable'>√</td>
+                                    <td title=''></td>
+                                    <td>null</td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table border='0' cellspacing='0' cellpadding='0'>
+                                        </table>
+                                    </td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td><span id="thirtysec_unixtime_s">thirtysec_unixtime_s</span></td>
@@ -204,7 +225,7 @@
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
                                     </td>
-                                    <td><p>The Unix timestamp for the 30 second interval.</p></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td><span id="thirtysec_voltage_mv">thirtysec_voltage_mv</span></td>
@@ -221,7 +242,7 @@
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
                                     </td>
-                                    <td><p>The average voltage of the test for the 30 second interval.</p></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td><span id="thirtysec_current_ma">thirtysec_current_ma</span></td>
@@ -238,7 +259,7 @@
                                         <table border='0' cellspacing='0' cellpadding='0'>
                                         </table>
                                     </td>
-                                    <td><p>The average current of the test for the 30 second interval.</p></td>
+                                    <td></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -262,7 +283,7 @@
                                 <div class="tab-content no-padding">
                                     <div class="chart tab-pane active" id="oneDegreeImg-chart" style="position: relative; overflow-x:auto;">
                                         <map id="oneDegreeRelationshipsDiagram" name="oneDegreeRelationshipsDiagram">
-<area shape="rect" id="node1" href="test_data_summary_30s.html" target="_top" title="test_data_summary_30s" alt="" coords="5,5,383,256">
+<area shape="rect" id="node1" href="test_data_summary_30s.html" target="_top" title="test_data_summary_30s" alt="" coords="5,5,383,315">
 </map>
                                         <a name='diagram'><img id="oneDegreeImg" src="../diagrams/tables/test_data_summary_30s.1degree.png" usemap="#oneDegreeRelationshipsDiagram" class="diagram" border="0" align="left"></a>
                                     </div>
@@ -280,7 +301,7 @@
                             </div>
                         </div>
                         <div class="box-body">
-                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT _materialized_hypertable_21.thirtysec,&#10;    _materialized_hypertable_21.test_id,&#10;    _materialized_hypertable_21.thirtysec_cycle,&#10;    _materialized_hypertable_21.thirtysec_test_time_s,&#10;    _materialized_hypertable_21.thirtysec_unixtime_s,&#10;    _materialized_hypertable_21.thirtysec_voltage_mv,&#10;    _materialized_hypertable_21.thirtysec_current_ma&#10;   FROM _timescaledb_internal._materialized_hypertable_21&#10;  WHERE (_materialized_hypertable_21.thirtysec &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(21)), &#39;-infinity&#39;::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket(&#39;00:00:30&#39;::interval, test_data.recorded_datetime) AS thirtysec,&#10;    test_data.test_id,&#10;    max(test_data.cycle) AS thirtysec_cycle,&#10;    max(test_data.test_time_s) AS thirtysec_test_time_s,&#10;    max(test_data.unixtime_s) AS thirtysec_unixtime_s,&#10;    avg(test_data.voltage_mv) AS thirtysec_voltage_mv,&#10;    avg(test_data.current_ma) AS thirtysec_current_ma&#10;   FROM test_data&#10;  WHERE (test_data.recorded_datetime &gt;&#61; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(21)), &#39;-infinity&#39;::timestamp with time zone))&#10;  GROUP BY (time_bucket(&#39;00:00:30&#39;::interval, test_data.recorded_datetime)), test_data.test_id;</textarea>
+                            <textarea id="sql-script-codemirror" name="sql-script-codemirror" rows="" style="display: none;">SELECT _materialized_hypertable_54.thirtysec,&#10;    _materialized_hypertable_54.test_id,&#10;    _materialized_hypertable_54.thirtysec_cycle,&#10;    _materialized_hypertable_54.thirtysec_step,&#10;    _materialized_hypertable_54.thirtysec_test_time_s,&#10;    _materialized_hypertable_54.thirtysec_step_time_s,&#10;    _materialized_hypertable_54.thirtysec_unixtime_s,&#10;    _materialized_hypertable_54.thirtysec_voltage_mv,&#10;    _materialized_hypertable_54.thirtysec_current_ma&#10;   FROM _timescaledb_internal._materialized_hypertable_54&#10;  WHERE (_materialized_hypertable_54.thirtysec &lt; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(54)), &#39;-infinity&#39;::timestamp with time zone))&#10;UNION ALL&#10; SELECT time_bucket(&#39;00:00:30&#39;::interval, test_data.recorded_datetime) AS thirtysec,&#10;    test_data.test_id,&#10;    max(test_data.cycle) AS thirtysec_cycle,&#10;    max(test_data.step) AS thirtysec_step,&#10;    max(test_data.test_time_s) AS thirtysec_test_time_s,&#10;    max(test_data.step_time_s) AS thirtysec_step_time_s,&#10;    max(test_data.unixtime_s) AS thirtysec_unixtime_s,&#10;    avg(test_data.voltage_mv) AS thirtysec_voltage_mv,&#10;    avg(test_data.current_ma) AS thirtysec_current_ma&#10;   FROM test_data&#10;  WHERE (test_data.recorded_datetime &gt;&#61; COALESCE(_timescaledb_internal.to_timestamp(_timescaledb_internal.cagg_watermark(54)), &#39;-infinity&#39;::timestamp with time zone))&#10;  GROUP BY (time_bucket(&#39;00:00:30&#39;::interval, test_data.recorded_datetime)), test_data.test_id;</textarea>
                             <div style="padding-top: 5px;"><hr></div>
                             <div class="box box-solid">
                                 <div class="box-header with-border">
