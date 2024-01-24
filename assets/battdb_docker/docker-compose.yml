@@ -7,7 +7,7 @@ networks:
       
 services:
   postgres:
-    image: timescale/timescaledb:2.11.2-pg15
+    image: timescale/timescaledb:2.13.1-pg15
     restart: always
     container_name: postgres
     command: postgres -c shared_preload_libraries='timescaledb,pg_stat_statements' -c pg_stat_statements.track=all
@@ -32,7 +32,7 @@ services:
       - battsoft-net
 
   flyway:
-    image: flyway/flyway:9.17.0
+    image: flyway/flyway:10.5.0
     container_name: flyway
     depends_on:
       postgres:
@@ -44,7 +44,7 @@ services:
       - battsoft-net
 
   schemaspy:
-    image: schemaspy/schemaspy:latest
+    image: schemaspy/schemaspy:6.2.4
     container_name: schemaspy
     depends_on:
       flyway:
