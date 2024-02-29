@@ -85,7 +85,7 @@ In order to use Docker Compose, you will need to have the following software ins
 
     ```sh
     docker network create battsoft-net
-    docker-compose --env-file .env up -d
+    docker-compose --env-file .env up -d --scale schemaspy=0
     ```
 
 4. Wait for Docker Compose to complete, and the `BattDB` database has been successfully deployed. The data for the database will be stored in the directory `assets/Docker/data`.
