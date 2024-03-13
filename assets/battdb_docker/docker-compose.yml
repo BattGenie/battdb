@@ -7,7 +7,7 @@ networks:
       
 services:
   postgres:
-    image: timescale/timescaledb:2.13.1-pg15
+    image: timescale/timescaledb:2.14.2-pg15
     restart: always
     container_name: postgres
     command: postgres -c shared_preload_libraries='timescaledb,pg_stat_statements' -c pg_stat_statements.track=all
