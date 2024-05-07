@@ -1,0 +1,10 @@
+version: '3'
+services:
+  battstudio-documentation:
+    container_name: battstudio-documentation
+    build: .
+    restart: unless-stopped
+    ports:
+      - '9001:80'
+
+
