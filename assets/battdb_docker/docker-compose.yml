@@ -24,10 +24,32 @@ services:
       options:
         max-size: 10m
         max-file: "3"
-    ports:
-      - "$POSTGRES_PORT:5432"
+    # ports:
+    #   - "$POSTGRES_PORT:5432"
     volumes:
       - ./data/$POSTGRES_DATABASE/:/var/lib/postgresql/data
+    networks:
+      - battsoft-net
+
+  pgbouncer:
+    image: bitnami/pgbouncer:1.22.1
+    restart: always
+    container_name: pgbouncer
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGBOUNCER_DEFAULT_POOL_SIZE: ${PGBOUNCER_DEFAULT_POOL_SIZE:-60}
+      PGBOUNCER_DATABASE: $POSTGRES_DATABASE
+      PGBOUNCER_PORT: 6432
+      PGBOUNCER_AUTH_USER: $POSTGRES_USER
+      POSTGRESQL_USERNAME: $POSTGRES_USER
+      POSTGRESQL_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRESQL_DATABASE: $POSTGRES_DATABASE
+      POSTGRESQL_HOST: postgres
+      POSTGRESQL_PORT: 5432
+    ports:
+      - "$POSTGRES_PORT:6432"
     networks:
       - battsoft-net
 
