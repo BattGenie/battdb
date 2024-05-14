@@ -81,12 +81,25 @@ In order to use Docker Compose, you will need to have the following software ins
 
     Use `FLYWAY_SQL=../migration_scripts_quick` for quick mode.
 
+
 3. Run Docker Compose:
 
+    **Note:** The existing command `docker-compose --env-file .env up -d --scale schemaspy=0` may produce the following error:
+    ```
+    TypeError: kwargs_from_env() got an unexpected keyword argument 'ssl_version'
+    ```
+
+    To resolve this issue, use the updated command below:
+    
     ```sh
     docker network create battsoft-net
-    docker-compose --env-file .env up -d --scale schemaspy=0
+    docker compose --env-file .env up -d --scale schemaspy=0
     ```
+
+    **Explanation:**
+    - The old command `docker-compose --env-file .env up -d --scale schemaspy=0` refers to the legacy standalone version of Docker Compose, which might not handle certain configurations correctly, leading to the above error.
+    - The new command `docker compose --env-file .env up -d --scale schemaspy=0` uses the integrated Docker Compose command available in the Docker CLI. This version is up-to-date, better integrated with Docker, and works without the mentioned error.
+    
 
 4. Wait for Docker Compose to complete, and the `BattDB` database has been successfully deployed. The data for the database will be stored in the directory `assets/Docker/data`.
 
