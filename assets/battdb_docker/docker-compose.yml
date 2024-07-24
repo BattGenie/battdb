@@ -48,8 +48,17 @@ services:
       POSTGRESQL_DATABASE: $POSTGRES_DATABASE
       POSTGRESQL_HOST: postgres
       POSTGRESQL_PORT: 5432
+
+      # SSL
+      PGBOUNCER_AUTH_TYPE: ${PGBOUNCER_AUTH_TYPE:-md5}
+      PGBOUNCER_CLIENT_TLS_SSLMODE: ${PGBOUNCER_CLIENT_TLS_SSLMODE:-disable}
+      PGBOUNCER_CLIENT_TLS_CA_FILE: ${PGBOUNCER_CLIENT_TLS_CA_FILE:-/certs/root.crt}
+      PGBOUNCER_CLIENT_TLS_CERT_FILE: ${PGBOUNCER_CLIENT_TLS_CERT_FILE:-/certs/server.crt}
+      PGBOUNCER_CLIENT_TLS_KEY_FILE: ${PGBOUNCER_CLIENT_TLS_KEY_FILE:-/certs/server.key}
     ports:
       - "$POSTGRES_PORT:6432"
+    volumes:
+      - ./certs:/certs
     networks:
       - battsoft-net
 

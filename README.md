@@ -1,6 +1,6 @@
 <img src="https://raw.githubusercontent.com/BattGenie/battdb/main/images/BattDB_Logo.png">
 
-# BattDB [![Documentation Status](https://readthedocs.org/projects/battdb/badge/?version=latest)](https://battdb.readthedocs.io/en/latest/?badge=latest) 
+# BattDB [![Documentation Status](https://readthedocs.org/projects/battdb/badge/?version=latest)](https://battdb.readthedocs.io/en/latest/?badge=latest)
 
 BattDB is a database based on TimescaleDB (Postgres 15 extension) to store battery-related field and experimental (physical and virtual) data, as well as the metadata. Detailed database documentation and a few deployment options are provided.
 
@@ -21,9 +21,14 @@ BattDB is a database based on TimescaleDB (Postgres 15 extension) to store batte
       - [Client playbooks](#client-playbooks)
       - [Deployment Steps](#deployment-steps-1)
     - [SSL](#ssl)
-      - [Key](#key)
-      - [postgresql.conf](#postgresqlconf)
-      - [pg\_hba.conf](#pg_hbaconf)
+      - [PostgreSQL](#postgresql)
+        - [Key](#key)
+        - [postgresql.conf](#postgresqlconf)
+        - [pg\_hba.conf](#pg_hbaconf)
+      - [PgBouncer](#pgbouncer)
+        - [Key](#key-1)
+        - [environment variables](#environment-variables)
+      - [Example commands to generate SSL certificates](#example-commands-to-generate-ssl-certificates)
 
 ## Database Design Principles
 
@@ -185,11 +190,13 @@ In order to use Ansible, you will need to have the following software installed 
 
 ### SSL
 
+#### PostgreSQL
+
 To establish an SSL connection with the database, please refer to the PostgreSQL official documentation:
 
 <https://www.postgresql.org/docs/current/ssl-tcp.html>
 
-#### Key
+##### Key
 
 You will need at least five files:
 
@@ -201,7 +208,7 @@ You will need at least five files:
 
 Please place `root.crt`, `server.crt` and `server.key` in the `BattDB/assets/battdb_docker/data/battdb` directory.
 
-#### postgresql.conf
+##### postgresql.conf
 
 You might need to modify the following content in `postgresql.conf`:
 
@@ -214,7 +221,7 @@ ssl_ciphers = 'HIGH:MEDIUM:+3DES:!aNULL' # allowed SSL ciphers
 ssl_prefer_server_ciphers = on
 ```
 
-#### pg_hba.conf
+##### pg_hba.conf
 
 We recommend adding the following settings:
 
@@ -230,6 +237,57 @@ External connections should use SSL:
 hostssl all all all cert
 ```
 
+#### PgBouncer
+
+To establish an SSL connection with PgBouncer, please refer to the PgBouncer official documentation:
+
+<https://www.pgbouncer.org/config.html>
+
+##### Key
+
+You will need at least five files:
+
+- root.crt
+- server.crt
+- server.key
+- client.crt
+- client.key
+
+Please place `root.crt`, `server.crt` and `server.key` in the `BattDB/assets/battdb_docker/certs` directory.
+
+##### environment variables
+
+Please add the following environment variables to the `.env` file:
+
+```text
+PGBOUNCER_CLIENT_TLS_SSLMODE=verify-full
+```
+
+Optionally, you can add the following environment variables to the `.env` file:
+
+- PGBOUNCER_CLIENT_TLS_CA_FILE: default is `/certs/root.crt`
+- PGBOUNCER_CLIENT_TLS_CERT_FILE: default is `/certs/server.crt`
+- PGBOUNCER_CLIENT_TLS_KEY_FILE: default is `/certs/server.key`
+
 **Restart the docker container to apply the SSL settings.**
 
 Please adjust these configurations based on your requirements and ensure that the specified files and paths are accurate for your setup.
+
+#### Example commands to generate SSL certificates
+
+```sh
+openssl genrsa -out ca.key 2048
+openssl genrsa -out server.key 2048
+openssl genrsa -out client.key 2048
+
+# Common Name: BGRoot (or your domain)
+openssl req -x509 -new -nodes -key ca.key -days 3650 -out ca.crt
+
+# Common Name: localhost (or your domain)
+openssl req -new -key server.key -out server.csr
+openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 3650
+
+# Common Name: localhost (or your domain)
+openssl req -new -key client.key -out client.csr
+openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out client.crt -days 3650
+```
