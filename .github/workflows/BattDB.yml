@@ -28,7 +28,7 @@ jobs:
           POSTGRES_PORT: 5432
           FLYWAY_SQL: ../migration_scripts
         run: |
-          docker-compose -f assets/battdb_docker/docker-compose.yml run flyway
+          docker compose -f assets/battdb_docker/docker-compose.yml run flyway
 
       - name: Check Flyway migration scripts version
         run: |
